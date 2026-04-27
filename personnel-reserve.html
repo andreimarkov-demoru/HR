@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Кадровый резерв / обучение</title>
+
+<style>
+:root{
+    --bg:#f4f7f7;
+    --accent:#294444;
+    --card:#ffffff;
+    --muted:#6b7c7c;
+    --line:#e5e7eb;
+}
+
+body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:var(--bg);
+    color:#1f2d2d;
+}
+
+/* HEADER */
+.header{
+    background:var(--accent);
+    color:#fff;
+    padding:40px;
+}
+
+.header h1{margin:0;font-size:28px;}
+.header p{margin-top:8px;opacity:.85;}
+
+/* LAYOUT */
+.wrapper{
+    display:grid;
+    grid-template-columns:260px 1fr;
+    gap:20px;
+    padding:20px 40px;
+}
+
+/* SIDEBAR */
+.sidebar{
+    background:#fff;
+    border-radius:14px;
+    padding:16px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.05);
+}
+
+.sidebar h3{
+    font-size:14px;
+    color:var(--accent);
+    margin-bottom:12px;
+}
+
+.btn{
+    width:100%;
+    padding:10px;
+    margin-bottom:8px;
+    border:1px solid var(--line);
+    background:#f9fbfb;
+    border-radius:10px;
+    cursor:pointer;
+    text-align:left;
+}
+
+.btn.active{
+    background:var(--accent);
+    color:#fff;
+}
+
+/* GRID */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:16px;
+}
+
+/* CARD */
+.card{
+    background:var(--card);
+    border-radius:16px;
+    padding:16px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.05);
+    border:1px solid var(--line);
+}
+
+.name{
+    font-size:16px;
+    font-weight:700;
+    color:var(--accent);
+}
+
+.role{
+    font-size:13px;
+    color:var(--muted);
+}
+
+/* BADGE */
+.badge{
+    display:inline-block;
+    margin-top:8px;
+    padding:4px 10px;
+    font-size:12px;
+    border-radius:999px;
+    background:#e7f0f0;
+    color:var(--accent);
+}
+
+/* PROGRESS */
+.progress{
+    margin-top:12px;
+    background:#eef2f2;
+    border-radius:10px;
+    height:10px;
+    overflow:hidden;
+}
+
+.bar{
+    height:100%;
+    width:0%;
+    transition:0.6s ease;
+}
+
+/* INFO */
+.info{
+    margin-top:10px;
+    font-size:13px;
+    color:var(--muted);
+}
+
+.goal{
+    margin-top:6px;
+    font-size:13px;
+}
+
+.goal strong{color:var(--accent);}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>Кадровый резерв / обучение</h1>
+    <p>Система развития сотрудников и подготовки к внутренним повышениям</p>
+</div>
+
+<div class="wrapper">
+
+<!-- FILTER -->
+<div class="sidebar">
+    <h3>Фильтр отделов</h3>
+    <button class="btn active" onclick="filter('ALL',this)">Все</button>
+    <button class="btn" onclick="filter('WEB',this)">WEB</button>
+    <button class="btn" onclick="filter('QA',this)">QA</button>
+    <button class="btn" onclick="filter('SAP',this)">SAP</button>
+    <button class="btn" onclick="filter('HR',this)">HR</button>
+    <button class="btn" onclick="filter('DEVOPS',this)">DEVOPS</button>
+</div>
+
+<!-- MAIN -->
+<div>
+
+<div class="grid">
+
+<!-- DEVOPS -->
+<div class="card" data-dept="DEVOPS">
+<div class="name">Андрей Марков</div>
+<div class="role">System Administrator</div>
+<span class="badge">DevOps</span>
+<div class="progress"><div class="bar" data-value="65"></div></div>
+<div class="info">Kubernetes, Docker, CI/CD</div>
+<div class="goal"><strong>Цель:</strong> DevOps Engineer</div>
+</div>
+
+<div class="card" data-dept="DEVOPS">
+<div class="name">Иван Петров</div>
+<div class="role">Infrastructure Engineer</div>
+<span class="badge">DevOps</span>
+<div class="progress"><div class="bar" data-value="55"></div></div>
+<div class="info">Linux, Networking</div>
+<div class="goal"><strong>Цель:</strong> Senior DevOps</div>
+</div>
+
+<!-- WEB -->
+<div class="card" data-dept="WEB">
+<div class="name">Виктория Сорокина</div>
+<div class="role">WEB Developer</div>
+<span class="badge">Senior рост</span>
+<div class="progress"><div class="bar" data-value="72"></div></div>
+<div class="info">React, UI architecture</div>
+<div class="goal"><strong>Цель:</strong> Senior FE</div>
+</div>
+
+<div class="card" data-dept="WEB">
+<div class="name">Илья Колесников</div>
+<div class="role">WEB Developer</div>
+<span class="badge">Middle</span>
+<div class="progress"><div class="bar" data-value="48"></div></div>
+<div class="info">TypeScript</div>
+<div class="goal"><strong>Цель:</strong> Senior</div>
+</div>
+
+<div class="card" data-dept="WEB">
+<div class="name">Алиса Смирнова</div>
+<div class="role">Frontend Developer</div>
+<span class="badge">Junior → Middle</span>
+<div class="progress"><div class="bar" data-value="38"></div></div>
+<div class="info">Vue.js</div>
+<div class="goal"><strong>Цель:</strong> Middle</div>
+</div>
+
+<!-- QA -->
+<div class="card" data-dept="QA">
+<div class="name">Юлия Дроздова</div>
+<div class="role">QA Team Lead</div>
+<span class="badge">Automation</span>
+<div class="progress"><div class="bar" data-value="80"></div></div>
+<div class="info">Test automation</div>
+<div class="goal"><strong>Цель:</strong> QA Architect</div>
+</div>
+
+<div class="card" data-dept="QA">
+<div class="name">Алексей Новиков</div>
+<div class="role">QA Engineer</div>
+<span class="badge">Junior</span>
+<div class="progress"><div class="bar" data-value="40"></div></div>
+<div class="info">API testing</div>
+<div class="goal"><strong>Цель:</strong> Middle QA</div>
+</div>
+
+<div class="card" data-dept="QA">
+<div class="name">Наталья Орлова</div>
+<div class="role">QA Engineer</div>
+<span class="badge">Middle</span>
+<div class="progress"><div class="bar" data-value="60"></div></div>
+<div class="info">Automation scripts</div>
+<div class="goal"><strong>Цель:</strong> Senior QA</div>
+</div>
+
+<!-- SAP -->
+<div class="card" data-dept="SAP">
+<div class="name">Вероника Григорьева</div>
+<div class="role">SAP Backend</div>
+<span class="badge">Expert growth</span>
+<div class="progress"><div class="bar" data-value="68"></div></div>
+<div class="info">SAP integration</div>
+<div class="goal"><strong>Цель:</strong> Architect</div>
+</div>
+
+<div class="card" data-dept="SAP">
+<div class="name">Евгений Кудрявцев</div>
+<div class="role">SAP Developer</div>
+<span class="badge">Backend</span>
+<div class="progress"><div class="bar" data-value="70"></div></div>
+<div class="info">ABAP</div>
+<div class="goal"><strong>Цель:</strong> Senior SAP Dev</div>
+</div>
+
+<!-- HR -->
+<div class="card" data-dept="HR">
+<div class="name">Мария Соболева</div>
+<div class="role">CFO / HR strategy</div>
+<span class="badge">Leadership</span>
+<div class="progress"><div class="bar" data-value="55"></div></div>
+<div class="info">Management</div>
+<div class="goal"><strong>Цель:</strong> HR Director</div>
+</div>
+
+<div class="card" data-dept="HR">
+<div class="name">Полина Наумова</div>
+<div class="role">HR Recruiter</div>
+<span class="badge">Recruitment</span>
+<div class="progress"><div class="bar" data-value="62"></div></div>
+<div class="info">Hiring pipeline</div>
+<div class="goal"><strong>Цель:</strong> Senior Recruiter</div>
+</div>
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+function getColor(v){
+    if(v < 30) return "#e74c3c";
+    if(v < 50) return "#f39c12";
+    if(v < 75) return "#f1c40f";
+    return "#2ecc71";
+}
+
+function render(){
+    document.querySelectorAll(".bar").forEach(b=>{
+        const v = +b.dataset.value;
+        b.style.width = v + "%";
+        b.style.background = getColor(v);
+    });
+}
+
+function filter(dep,btn){
+    document.querySelectorAll(".btn").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+
+    document.querySelectorAll(".card").forEach(c=>{
+        c.style.display = (dep === "ALL" || c.dataset.dept === dep) ? "block" : "none";
+    });
+}
+
+render();
+
+</script>
+
+</body>
+</html>
