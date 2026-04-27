@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>График отпусков сотрудников</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: rgb(109,162,150);
+  margin: 0;
+  padding: 20px;
+}
+
+.container {
+  background: white;
+  border-radius: 10px;
+  border: 1px solid #777373;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.meta {
+  color: #666;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+th, td {
+  border: 1px solid #777373;
+  padding: 0;
+  text-align: left;
+}
+
+th {
+  background: rgb(109,162,150);
+  font-size: 14px;
+  padding: 12px;
+  color: #fff;
+  font-weight: bold;
+}
+
+input, select {
+  width: 100%;
+  border: none;
+  padding: 10px;
+  box-sizing: border-box;
+  font-size: 14px;
+  background: transparent;
+}
+
+input:focus, select:focus {
+  outline: 2px solid #2d6cdf;
+  background: #f8fbff;
+}
+
+.add-row {
+  margin-top: 20px;
+  padding: 10px 16px;
+  background: #2d6cdf;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.add-row:hover {
+  background: #1f56b5;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>График отпусков сотрудников на 2026 год</h1>
+  <div class="meta">
+    Подразделение: HR и управление персоналом | Последнее обновление: 27.04.2026
+  </div>
+
+  <table id="vacationTable">
+    <thead>
+      <tr>
+        <th>Сотрудник</th>
+        <th>ID</th>
+        <th>Дата начала</th>
+        <th>Дата окончания</th>
+        <th>Дней</th>
+        <th>Статус</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr><td><input value="Максим Богданов"></td><td><input value="DRU0010001"></td><td><input value="15.06.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="28.06.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="14"></td><td><select><option selected>Согласован</option><option>На согласовании</option><option>Отклонен</option></select></td></tr>
+
+      <tr><td><input value="Мария Соболева"></td><td><input value="DRU0010002"></td><td><input value="03.08.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="16.08.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="14"></td><td><select><option selected>Согласован</option><option>На согласовании</option></select></td></tr>
+
+      <tr><td><input value="Татьяна Полякова"></td><td><input value="DRU0010003"></td><td><input value="20.07.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="02.08.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="14"></td><td><select><option selected>Согласован</option><option>На согласовании</option></select></td></tr>
+
+      <tr><td><input value="Полина Наумова"></td><td><input value="DRU0010004"></td><td><input value="07.09.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="20.09.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="14"></td><td><select><option>Согласован</option><option selected>На согласовании</option></select></td></tr>
+
+      <tr><td><input value="Михаил Орлов"></td><td><input value="DRU0010005"></td><td><input value="11.05.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="24.05.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="14"></td><td><select><option selected>Согласован</option></select></td></tr>
+
+      <tr><td><input value="Андрей Марков"></td><td><input value="DRU0010006"></td><td><input value="13.07.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="26.07.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="14"></td><td><select><option selected>Согласован</option></select></td></tr>
+
+      <tr><td><input value="Артем Федоров"></td><td><input value="DRU0010007"></td><td><input value="05.10.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="18.10.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="14"></td><td><select><option>Согласован</option><option selected>На согласовании</option></select></td></tr>
+
+      <tr><td><input value="Юлия Дроздова"></td><td><input value="DRU0010008"></td><td><input value="01.06.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="14.06.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="14"></td><td><select><option selected>Согласован</option></select></td></tr>
+
+      <tr><td><input value="Алексей Новиков"></td><td><input value="DRU0010009"></td><td><input value="17.08.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="30.08.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="14"></td><td><select><option selected>Согласован</option></select></td></tr>
+
+      <tr><td><input value="Анастасия Фомина"></td><td><input value="DRU0010010"></td><td><input value="02.11.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="15.11.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="14"></td><td><select><option selected>Согласован</option></select></td></tr>
+
+      <tr><td><input value="Никита Кузнецов"></td><td><input value="DRU0010011"></td><td><input value="22.06.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="05.07.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="14"></td><td><select><option selected>Согласован</option></select></td></tr>
+
+      <tr><td><input value="Антон Сазонов"></td><td><input value="DRU0010012"></td><td><input value="14.09.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="27.09.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="14"></td><td><select><option selected>Согласован</option></select></td></tr>
+
+      <tr><td><input value="Виктория Сорокина"></td><td><input value="DRU0010013"></td><td><input value="06.07.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="19.07.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="14"></td><td><select><option>Согласован</option><option selected>На согласовании</option></select></td></tr>
+
+      <tr><td><input value="Илья Колесников"></td><td><input value="DRU0010014"></td><td><input value="10.08.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="23.08.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="14"></td><td><select><option selected>Согласован</option></select></td></tr>
+
+      <tr><td><input value="Алиса Смирнова"></td><td><input value="DRU0010015"></td><td><input value="07.12.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="20.12.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="14"></td><td><select><option selected>Согласован</option></select></td></tr>
+
+      <tr><td><input value="Матвей Яковлев"></td><td><input value="DRU0010016"></td><td><input value="25.05.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="07.06.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="14"></td><td><select><option selected>Согласован</option></select></td></tr>
+
+      <tr><td><input value="Александр Мельников"></td><td><input value="DRU0010017"></td><td><input value="12.10.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="25.10.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="14"></td><td><select><option selected>Согласован</option></select></td></tr>
+
+      <tr><td><input value="Светлана Волкова"></td><td><input value="DRU0010018"></td><td><input value="08.06.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="21.06.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="14"></td><td><select><option>Согласован</option><option selected>На согласовании</option></select></td></tr>
+
+      <tr><td><input value="Евгений Кудрявцев"></td><td><input value="DRU0010019"></td><td><input value="16.11.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="29.11.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="14"></td><td><select><option selected>Согласован</option></select></td></tr>
+
+      <tr><td><input value="Вероника Григорьева"></td><td><input value="DRU0010020"></td><td><input value="27.07.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="09.08.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="14"></td><td><select><option selected>Согласован</option></select></td></tr>
+
+      <tr><td><input value="Егор Власов"></td><td><input value="DRU0010021"></td><td><input value="21.09.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="04.10.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="14"></td><td><select><option selected>Согласован</option></select></td></tr>
+
+      <tr><td><input value="Ксения Сафронова"></td><td><input value="DRU0010022"></td><td><input value="31.08.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="13.09.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="14"></td><td><select><option>Согласован</option><option selected>На согласовании</option></select></td></tr>
+
+      <tr><td><input value="Анна Дружинина"></td><td><input value="DRU0010023"></td><td><input value="14.09.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="27.09.2026" placeholder="ДД.ММ.ГГГГ"></td><td><input value="14"></td><td><select><option>Согласован</option><option selected>На согласовании</option></select></td></tr>
+    </tbody>
+  </table>
+
+  <button class="add-row" onclick="addRow()">Добавить запись</button>
+</div>
+
+<script>
+function addRow() {
+  const table = document.querySelector('#vacationTable tbody');
+  const row = document.createElement('tr');
+
+  row.innerHTML = `
+    <td><input placeholder="ФИО сотрудника"></td>
+    <td><input placeholder="ID"></td>
+    <td><input placeholder="ДД.ММ.ГГГГ"></td>
+    <td><input placeholder="ДД.ММ.ГГГГ"></td>
+    <td><input placeholder="0"></td>
+    <td>
+      <select>
+        <option>Согласован</option>
+        <option selected>На согласовании</option>
+        <option>Отклонен</option>
+      </select>
+    </td>
+  `;
+
+  table.appendChild(row);
+}
+</script>
+
+</body>
+</html>
