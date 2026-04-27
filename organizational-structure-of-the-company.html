@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Организационная структура компании</title>
+
+<script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+
+<style>
+body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:linear-gradient(180deg,#f3f6f6,#e8efef);
+    color:#1f2a2a;
+}
+
+/* HEADER */
+.header{
+    padding:30px 40px;
+    background:#294444;
+    color:#ffffff;
+    border-bottom:4px solid #1f3333;
+}
+
+.header h1{
+    margin:0;
+    font-size:28px;
+    font-weight:600;
+}
+
+.header p{
+    margin-top:8px;
+    color:#cfe2e2;
+    max-width:900px;
+    line-height:1.6;
+    font-size:15px;
+}
+
+/* CHART AREA */
+#network{
+    height: calc(100vh - 110px);
+    width: 100%;
+    background:
+        radial-gradient(circle at top, rgba(41,68,68,0.08), transparent 60%);
+}
+
+/* override vis canvas */
+.vis-network{
+    outline:none;
+}
+
+/* make nodes cleaner */
+.vis-node{
+    font-size:12px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>Организационная структура компании</h1>
+    <p>Иерархия подразделений и сотрудников. Интерактивная схема для навигации по командам и ролям.</p>
+</div>
+
+<div id="network"></div>
+
+<script>
+
+const nodes = new vis.DataSet([
+    {id:1, label:"CEO\nБогданов Максим", level:0},
+
+    {id:2, label:"CFO\nСоболева Мария", level:1},
+    {id:3, label:"HRD\nПолякова Татьяна", level:1},
+    {id:4, label:"System Admin\nМарков Андрей", level:1},
+    {id:5, label:"PM\nФедоров Артем", level:1},
+
+    {id:6, label:"HR Recruiter\nНаумова Полина", level:2},
+    {id:7, label:"HR Specialist\nОрлов Михаил", level:2},
+
+    {id:8, label:"QA Lead\nДроздова Юлия", level:2},
+    {id:9, label:"QA Engineer\nНовиков Алексей", level:3},
+    {id:10, label:"QA Engineer\nФомина Анастасия", level:3},
+    {id:11, label:"QA Engineer\nКузнецов Никита", level:3},
+
+    {id:12, label:"WEB Lead\nСазонов Антон", level:2},
+    {id:13, label:"WEB Dev\nСорокина Виктория", level:3},
+    {id:14, label:"WEB Dev\nКолесников Илья", level:3},
+    {id:15, label:"WEB Dev\nСмирнова Алиса", level:3},
+
+    {id:16, label:"SAP Lead\nЯковлев Матвей", level:2},
+    {id:17, label:"SAP FE\nМельников Александр", level:3},
+    {id:18, label:"SAP FE\nВолкова Светлана", level:3},
+    {id:19, label:"SAP BE\nКудрявцев Евгений", level:3},
+    {id:20, label:"SAP BE\nГригорьева Вероника", level:3},
+
+    {id:21, label:"Mobile Lead\nВласов Егор", level:2},
+    {id:22, label:"Mobile Dev\nСафронова Ксения", level:3},
+
+    {id:23, label:"Backend Dev\nДружинина Анна", level:2},
+]);
+
+const edges = new vis.DataSet([
+    {from:1,to:2},
+    {from:1,to:3},
+    {from:1,to:4},
+    {from:1,to:5},
+
+    {from:3,to:6},
+    {from:3,to:7},
+
+    {from:1,to:8},
+    {from:8,to:9},
+    {from:8,to:10},
+    {from:8,to:11},
+
+    {from:1,to:12},
+    {from:12,to:13},
+    {from:12,to:14},
+    {from:12,to:15},
+
+    {from:1,to:16},
+    {from:16,to:17},
+    {from:16,to:18},
+    {from:16,to:19},
+    {from:16,to:20},
+
+    {from:1,to:21},
+    {from:21,to:22},
+
+    {from:1,to:23}
+]);
+
+const container = document.getElementById("network");
+
+const data = { nodes, edges };
+
+const options = {
+    layout: {
+        hierarchical: {
+            direction: "UD",
+            sortMethod: "directed",
+            nodeSpacing: 170,
+            levelSeparation: 120
+        }
+    },
+    nodes: {
+        shape: "box",
+        margin: 10,
+        font: {
+            color: "#1f2a2a",
+            size: 12
+        },
+        color: {
+            background: "#ffffff",
+            border: "#294444",
+            highlight: {
+                background: "#e8f1f1",
+                border: "#1f3333"
+            }
+        },
+        borderWidth: 1
+    },
+    edges: {
+        color: {
+            color: "#6b8f8f"
+        },
+        smooth: true
+    },
+    physics: false
+};
+
+new vis.Network(container, data, options);
+
+</script>
+
+</body>
+</html>
