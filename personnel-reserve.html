@@ -147,15 +147,15 @@ body{
 
 <div class="wrapper">
 
-<!-- FILTER -->
+<!-- SIDEBAR -->
 <div class="sidebar">
     <h3>Фильтр отделов</h3>
-    <button class="btn active" onclick="filter('ALL',this)">Все</button>
-    <button class="btn" onclick="filter('WEB',this)">WEB</button>
-    <button class="btn" onclick="filter('QA',this)">QA</button>
+    <button class="btn active" onclick="filter('ALL',this)">Все сотрудники</button>
+    <button class="btn" onclick="filter('WEB',this)">Веб-разработка</button>
+    <button class="btn" onclick="filter('QA',this)">Тестирование (QA)</button>
     <button class="btn" onclick="filter('SAP',this)">SAP</button>
     <button class="btn" onclick="filter('HR',this)">HR</button>
-    <button class="btn" onclick="filter('DEVOPS',this)">DEVOPS</button>
+    <button class="btn" onclick="filter('DEVOPS',this)">Инфраструктура / DevOps</button>
 </div>
 
 <!-- MAIN -->
@@ -166,114 +166,114 @@ body{
 <!-- DEVOPS -->
 <div class="card" data-dept="DEVOPS">
 <div class="name">Андрей Марков</div>
-<div class="role">System Administrator</div>
-<span class="badge">DevOps</span>
+<div class="role">Системный администратор</div>
+<span class="badge">DevOps направление</span>
 <div class="progress"><div class="bar" data-value="65"></div></div>
 <div class="info">Kubernetes, Docker, CI/CD</div>
-<div class="goal"><strong>Цель:</strong> DevOps Engineer</div>
+<div class="goal"><strong>Цель:</strong> DevOps инженер</div>
 </div>
 
 <div class="card" data-dept="DEVOPS">
 <div class="name">Иван Петров</div>
-<div class="role">Infrastructure Engineer</div>
-<span class="badge">DevOps</span>
+<div class="role">Инженер инфраструктуры</div>
+<span class="badge">DevOps направление</span>
 <div class="progress"><div class="bar" data-value="55"></div></div>
-<div class="info">Linux, Networking</div>
-<div class="goal"><strong>Цель:</strong> Senior DevOps</div>
+<div class="info">Linux, сети</div>
+<div class="goal"><strong>Цель:</strong> Senior DevOps инженер</div>
 </div>
 
 <!-- WEB -->
 <div class="card" data-dept="WEB">
 <div class="name">Виктория Сорокина</div>
-<div class="role">WEB Developer</div>
-<span class="badge">Senior рост</span>
+<div class="role">Веб-разработчик</div>
+<span class="badge">Рост до Senior</span>
 <div class="progress"><div class="bar" data-value="72"></div></div>
-<div class="info">React, UI architecture</div>
-<div class="goal"><strong>Цель:</strong> Senior FE</div>
+<div class="info">React, архитектура интерфейсов</div>
+<div class="goal"><strong>Цель:</strong> Senior frontend разработчик</div>
 </div>
 
 <div class="card" data-dept="WEB">
 <div class="name">Илья Колесников</div>
-<div class="role">WEB Developer</div>
-<span class="badge">Middle</span>
+<div class="role">Веб-разработчик</div>
+<span class="badge">Middle уровень</span>
 <div class="progress"><div class="bar" data-value="48"></div></div>
 <div class="info">TypeScript</div>
-<div class="goal"><strong>Цель:</strong> Senior</div>
+<div class="goal"><strong>Цель:</strong> Senior разработчик</div>
 </div>
 
 <div class="card" data-dept="WEB">
 <div class="name">Алиса Смирнова</div>
-<div class="role">Frontend Developer</div>
+<div class="role">Frontend разработчик</div>
 <span class="badge">Junior → Middle</span>
 <div class="progress"><div class="bar" data-value="38"></div></div>
 <div class="info">Vue.js</div>
-<div class="goal"><strong>Цель:</strong> Middle</div>
+<div class="goal"><strong>Цель:</strong> Middle разработчик</div>
 </div>
 
 <!-- QA -->
 <div class="card" data-dept="QA">
 <div class="name">Юлия Дроздова</div>
-<div class="role">QA Team Lead</div>
-<span class="badge">Automation</span>
+<div class="role">Руководитель QA команды</div>
+<span class="badge">Автоматизация</span>
 <div class="progress"><div class="bar" data-value="80"></div></div>
-<div class="info">Test automation</div>
-<div class="goal"><strong>Цель:</strong> QA Architect</div>
+<div class="info">Автотесты</div>
+<div class="goal"><strong>Цель:</strong> QA архитектор</div>
 </div>
 
 <div class="card" data-dept="QA">
 <div class="name">Алексей Новиков</div>
-<div class="role">QA Engineer</div>
+<div class="role">QA инженер</div>
 <span class="badge">Junior</span>
 <div class="progress"><div class="bar" data-value="40"></div></div>
-<div class="info">API testing</div>
-<div class="goal"><strong>Цель:</strong> Middle QA</div>
+<div class="info">API тестирование</div>
+<div class="goal"><strong>Цель:</strong> Middle QA инженер</div>
 </div>
 
 <div class="card" data-dept="QA">
 <div class="name">Наталья Орлова</div>
-<div class="role">QA Engineer</div>
+<div class="role">QA инженер</div>
 <span class="badge">Middle</span>
 <div class="progress"><div class="bar" data-value="60"></div></div>
-<div class="info">Automation scripts</div>
-<div class="goal"><strong>Цель:</strong> Senior QA</div>
+<div class="info">Автоматизация тестов</div>
+<div class="goal"><strong>Цель:</strong> Senior QA инженер</div>
 </div>
 
 <!-- SAP -->
 <div class="card" data-dept="SAP">
 <div class="name">Вероника Григорьева</div>
-<div class="role">SAP Backend</div>
-<span class="badge">Expert growth</span>
+<div class="role">SAP backend разработчик</div>
+<span class="badge">Экспертный рост</span>
 <div class="progress"><div class="bar" data-value="68"></div></div>
-<div class="info">SAP integration</div>
-<div class="goal"><strong>Цель:</strong> Architect</div>
+<div class="info">SAP интеграции</div>
+<div class="goal"><strong>Цель:</strong> SAP архитектор</div>
 </div>
 
 <div class="card" data-dept="SAP">
 <div class="name">Евгений Кудрявцев</div>
-<div class="role">SAP Developer</div>
+<div class="role">SAP разработчик</div>
 <span class="badge">Backend</span>
 <div class="progress"><div class="bar" data-value="70"></div></div>
 <div class="info">ABAP</div>
-<div class="goal"><strong>Цель:</strong> Senior SAP Dev</div>
+<div class="goal"><strong>Цель:</strong> Senior SAP разработчик</div>
 </div>
 
 <!-- HR -->
 <div class="card" data-dept="HR">
 <div class="name">Мария Соболева</div>
-<div class="role">CFO / HR strategy</div>
-<span class="badge">Leadership</span>
+<div class="role">CFO / HR стратегия</div>
+<span class="badge">Лидерство</span>
 <div class="progress"><div class="bar" data-value="55"></div></div>
-<div class="info">Management</div>
-<div class="goal"><strong>Цель:</strong> HR Director</div>
+<div class="info">Управление командами</div>
+<div class="goal"><strong>Цель:</strong> HR директор</div>
 </div>
 
 <div class="card" data-dept="HR">
 <div class="name">Полина Наумова</div>
-<div class="role">HR Recruiter</div>
-<span class="badge">Recruitment</span>
+<div class="role">HR рекрутер</div>
+<span class="badge">Подбор персонала</span>
 <div class="progress"><div class="bar" data-value="62"></div></div>
-<div class="info">Hiring pipeline</div>
-<div class="goal"><strong>Цель:</strong> Senior Recruiter</div>
+<div class="info">Воронка найма</div>
+<div class="goal"><strong>Цель:</strong> Senior рекрутер</div>
 </div>
 
 </div>
