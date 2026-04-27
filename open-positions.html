@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Открытые вакансии / подбор</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+:root{
+    --bg:#f4f7f7;
+    --panel:#ffffff;
+    --accent:#294444;
+    --muted:#6b7c7c;
+}
+
+body{
+    background:var(--bg);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+/* HEADER */
+.header{
+    background:var(--accent);
+    color:#fff;
+    padding:35px 40px;
+}
+
+.header h1{font-size:28px;margin:0;}
+.header p{margin-top:6px;opacity:.8;}
+
+/* KPI */
+.kpi{
+    background:#fff;
+    border-radius:14px;
+    padding:18px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.05);
+    text-align:center;
+}
+
+.kpi h2{
+    margin:0;
+    font-size:22px;
+    color:var(--accent);
+}
+
+/* LAYOUT */
+.wrapper{
+    display:grid;
+    grid-template-columns:260px 1fr;
+    gap:20px;
+    padding:20px 40px;
+}
+
+/* FILTERS */
+.filters{
+    background:#fff;
+    padding:18px;
+    border-radius:16px;
+    height:fit-content;
+    box-shadow:0 6px 18px rgba(0,0,0,0.05);
+}
+
+.filters h5{
+    color:var(--accent);
+}
+
+/* кнопки фильтров */
+.filter-btn{
+    width:100%;
+    margin-bottom:8px;
+    border:1px solid #e5e7eb;
+    background:#f9fbfb;
+    padding:8px;
+    border-radius:10px;
+    text-align:left;
+    cursor:pointer;
+}
+
+.filter-btn.active{
+    background:var(--accent);
+    color:#fff;
+}
+
+/* VACANCY CARD */
+.card-job{
+    background:#fff;
+    border-radius:16px;
+    padding:18px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.05);
+    margin-bottom:15px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.card-job:hover{
+    transform:translateY(-2px);
+}
+
+/* ДОЛЖНОСТЬ */
+.title{
+    font-size:18px;
+    color:var(--accent);
+    font-weight:600;
+}
+
+/* ОПИСАНИЕ */
+.meta{
+    font-size:13px;
+    color:var(--muted);
+}
+
+/* ТЕГИ */
+.badge-custom{
+    background:#e7f0f0;
+    color:var(--accent);
+    font-size:12px;
+    padding:4px 10px;
+    border-radius:999px;
+}
+
+/* MODAL */
+.modal-bg{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.4);
+    display:none;
+    justify-content:center;
+    align-items:center;
+}
+
+.modal-box{
+    background:#fff;
+    width:500px;
+    border-radius:16px;
+    padding:20px;
+}
+
+.close-btn{
+    float:right;
+    cursor:pointer;
+    font-weight:600;
+    color:#999;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>Открытые вакансии / подбор персонала</h1>
+    <p>Внутренняя система управления наймом и распределением кандидатов</p>
+</div>
+
+<div class="wrapper">
+
+<!-- FILTERS -->
+<div class="filters">
+    <h5>Фильтры</h5>
+
+    <button class="filter-btn active" onclick="filterJobs('all', this)">Все направления</button>
+    <button class="filter-btn" onclick="filterJobs('WEB', this)">Разработка WEB</button>
+    <button class="filter-btn" onclick="filterJobs('QA', this)">Тестирование (QA)</button>
+    <button class="filter-btn" onclick="filterJobs('SAP', this)">SAP направление</button>
+    <button class="filter-btn" onclick="filterJobs('HR', this)">HR и подбор</button>
+
+</div>
+
+<!-- MAIN -->
+<div>
+
+<!-- KPI -->
+<div class="row mb-3 g-3">
+    <div class="col-md-4"><div class="kpi"><h2>23</h2><div>Открытые вакансии</div></div></div>
+    <div class="col-md-4"><div class="kpi"><h2>11</h2><div>В процессе подбора</div></div></div>
+    <div class="col-md-4"><div class="kpi"><h2>7</h2><div>Закрыто за месяц</div></div></div>
+</div>
+
+<!-- VACANCIES -->
+<div id="list">
+
+<div class="card-job" data-dept="WEB" onclick="openJob(1)">
+<div class="title">Frontend-разработчик (WEB)</div>
+<div class="meta">Команда WEB • Middle • Удалённо</div>
+</div>
+
+<div class="card-job" data-dept="QA" onclick="openJob(2)">
+<div class="title">Инженер по тестированию (QA)</div>
+<div class="meta">Отдел QA • Middle • Офис</div>
+</div>
+
+<div class="card-job" data-dept="SAP" onclick="openJob(3)">
+<div class="title">Backend-разработчик SAP</div>
+<div class="meta">SAP команда • Senior • Гибрид</div>
+</div>
+
+<div class="card-job" data-dept="HR" onclick="openJob(4)">
+<div class="title">HR-рекрутер</div>
+<div class="meta">HR департамент • Middle • Офис</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modal">
+<div class="modal-box">
+<span class="close-btn" onclick="closeJob()">✕</span>
+<h4 id="m-title"></h4>
+<p id="m-text"></p>
+</div>
+</div>
+
+<script>
+
+const data = {
+1:{title:"Frontend-разработчик (WEB)",text:"Разработка пользовательских интерфейсов корпоративной системы, работа с компонентной архитектурой и API."},
+2:{title:"Инженер по тестированию (QA)",text:"Функциональное и автоматизированное тестирование веб-платформы, участие в CI/CD процессах."},
+3:{title:"Backend-разработчик SAP",text:"Разработка серверной логики SAP, интеграции с корпоративными системами и оптимизация процессов."},
+4:{title:"HR-рекрутер",text:"Полный цикл подбора персонала: поиск, интервью, оценка кандидатов и взаимодействие с командами."}
+};
+
+/* MODAL */
+function openJob(id){
+    document.getElementById("modal").style.display="flex";
+    document.getElementById("m-title").innerText = data[id].title;
+    document.getElementById("m-text").innerText = data[id].text;
+}
+
+function closeJob(){
+    document.getElementById("modal").style.display="none";
+}
+
+/* FILTER LOGIC */
+function filterJobs(dept, btn){
+
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const jobs = document.querySelectorAll('.card-job');
+
+    jobs.forEach(job=>{
+        const type = job.getAttribute('data-dept');
+
+        if(dept === 'all' || type === dept){
+            job.style.display = 'block';
+        } else {
+            job.style.display = 'none';
+        }
+    });
+}
+
+</script>
+
+</body>
+</html>
