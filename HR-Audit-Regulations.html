@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Регламент кадрового аудита</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial;
+    background: #f5f7fb;
+    color: #2b2b2b;
+    line-height: 1.6;
+  }
+  .body {
+    background: linear-gradient(190deg, #ffffff 0%, rgba(109, 162, 150, 0.85) 100%);
+  }
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 24px;
+  }
+  .card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 28px;
+  }
+
+  .section {
+    margin-bottom: 34px;
+  }
+
+  .title {
+    font-size: 16px;
+    font-weight: 600;
+    border-left: 4px solid rgb(109,162,150);
+    padding-left: 10px;
+    margin-bottom: 14px;
+  }
+
+  /* ---------------- CHECKLIST ---------------- */
+  .checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .check {
+    display: flex;
+    gap: 10px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .check input {
+    margin-top: 3px;
+    accent-color: rgb(109,162,150);
+  }
+
+  .check.done span {
+    text-decoration: line-through;
+    color: #9ca3af;
+  }
+
+  /* ---------------- TIMELINE ---------------- */
+  .timeline {
+    position: relative;
+    margin-left: 10px;
+    padding-left: 24px;
+  }
+
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 6px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: rgba(109,162,150,0.5);
+  }
+
+  .step {
+    position: relative;
+    margin-bottom: 22px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: 0.4s ease;
+  }
+
+  .step.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .dot {
+    position: absolute;
+    left: -18px;
+    top: 4px;
+    width: 10px;
+    height: 10px;
+    background: rgb(109,162,150);
+    border-radius: 50%;
+  }
+
+  .step-title {
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .step-text {
+    font-size: 13px;
+    color: #4b5563;
+  }
+
+  /* ---------------- COLUMNS ---------------- */
+  .columns {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .col {
+    background: #e6f2f2;
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 14px;
+  }
+
+  .col h3 {
+    margin: 0 0 8px 0;
+    font-size: 14px;
+  }
+
+  /* NOTE */
+  .note {
+    margin-top: 30px;
+    padding: 14px 16px;
+    border-left: 4px solid rgb(109,162,150);
+    background: #e6f2f2;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+
+</style>
+</head>
+
+<body>
+<div class="body">
+  <div class="container">
+    <div class="card">
+<div class="header">
+  <h1>Регламент кадрового аудита</h1>
+</div>
+
+<div class="container">
+
+  <!-- 1 COLUMNS -->
+  <div class="section">
+    <div class="title">1. Объект аудита</div>
+
+    <div class="columns">
+      <div class="col">
+        <h3>Документы</h3>
+        Личные дела<br>
+        Трудовые договоры<br>
+        Приказы
+      </div>
+
+      <div class="col">
+        <h3>Системы</h3>
+        HR-база данных<br>
+        Архив документов<br>
+        Электронные согласия
+      </div>
+    </div>
+  </div>
+
+  <!-- 2 CHECKLIST -->
+  <div class="section">
+    <div class="title">2. Контрольные критерии</div>
+
+    <div class="checklist">
+
+      <label class="check">
+        <input type="checkbox" onchange="toggle(this)">
+        <span>Личные дела сотрудников сформированы полностью</span>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" onchange="toggle(this)">
+        <span>Трудовые договоры актуальны</span>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" onchange="toggle(this)">
+        <span>Должностные инструкции соответствуют ролям</span>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" onchange="toggle(this)">
+        <span>HR-данные совпадают с документами</span>
+      </label>
+
+    </div>
+  </div>
+
+  <!-- 3 TIMELINE -->
+  <div class="section">
+    <div class="title">3. Порядок проведения аудита</div>
+
+    <div class="timeline">
+
+      <div class="step">
+        <div class="dot"></div>
+        <div class="step-title">Формирование выборки</div>
+        <div class="step-text">Определение сотрудников для проверки</div>
+      </div>
+
+      <div class="step">
+        <div class="dot"></div>
+        <div class="step-title">Анализ документов</div>
+        <div class="step-text">Проверка комплектности и актуальности</div>
+      </div>
+
+      <div class="step">
+        <div class="dot"></div>
+        <div class="step-title">Сверка данных</div>
+        <div class="step-text">Сопоставление HR-системы и документов</div>
+      </div>
+
+      <div class="step">
+        <div class="dot"></div>
+        <div class="step-title">Фиксация отклонений</div>
+        <div class="step-text">Регистрация несоответствий</div>
+      </div>
+
+      <div class="step">
+        <div class="dot"></div>
+        <div class="step-title">Итоговый акт</div>
+        <div class="step-text">Формирование отчёта аудита</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 4 NORMAL BLOCK -->
+  <div class="section">
+    <div class="title">4. Результаты</div>
+
+    <div class="columns">
+      <div class="col">Акт аудита</div>
+      <div class="col">Реестр нарушений</div>
+      <div class="col">План корректировок</div>
+      <div class="col">Отчет HR-службы</div>
+    </div>
+
+    <div class="note">
+      Ответственность за аудит несёт HR-служба совместно с внутренним контролем.
+    </div>
+  </div>
+
+</div>
+</div>
+</div>
+</div>
+<script>
+function toggle(el) {
+  const item = el.closest('.check');
+  item.classList.toggle('done', el.checked);
+}
+
+/* animation on scroll */
+const steps = document.querySelectorAll('.step');
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.2 });
+
+steps.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
