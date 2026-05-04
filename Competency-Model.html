@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Модель компетенций</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+:root{
+  --bg:#f5f7fb;
+  --accent:rgb(109,162,150);
+  --accent-soft:#e6efec;
+  --text:#2b2b2b;
+  --muted:#6b7280;
+}
+
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  color:var(--text);
+}
+
+/* HEADER */
+.header{
+  padding:50px 30px;
+  background:linear-gradient(135deg,#ffffff 0%, rgba(109,162,150,0.25) 100%);
+}
+
+.header h1{font-size:30px;margin:0;}
+.header p{margin-top:10px;color:var(--muted);max-width:900px;}
+
+.meta span{
+  display:inline-block;
+  margin:6px 6px 0 0;
+  background:rgba(109,162,150,0.12);
+  border:1px solid rgba(109,162,150,0.25);
+  padding:4px 10px;
+  border-radius:999px;
+  font-size:13px;
+}
+
+.section{margin-top:40px;}
+
+/* FLOW */
+.flow-step{
+  background:#ffffff;
+  padding:18px;
+  border-radius:14px;
+  height:100%;
+  border:1px solid rgba(0,0,0,0.06);
+  box-shadow:0 6px 18px rgba(0,0,0,0.05);
+  transition:0.35s ease;
+}
+
+.flow-step:hover{
+  transform:translateY(-6px) scale(1.01);
+  box-shadow:0 12px 30px rgba(0,0,0,0.08);
+}
+
+/* CARD */
+.card{
+  border:none;
+  border-radius:14px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.05);
+  overflow:hidden;
+  position:relative;
+}
+  #chart {width: 600px !important;
+  height: 600px !important;
+  margin: 0 auto;}
+
+/* LEVEL CARD */
+.level-card{
+  background:var(--accent-soft);
+  border-radius:12px;
+  padding:14px;
+  border:1px solid rgba(109,162,150,0.25);
+}
+
+/* GAP BAR */
+.gap-bar{
+  height:10px;
+  border-radius:10px;
+  background:#eee;
+  overflow:hidden;
+}
+
+.gap-fill{
+  height:100%;
+}
+
+/* ACCORDION */
+.accordion{
+  --bs-accordion-bg:#ffffff;
+  --bs-accordion-border-color:rgba(109,162,150,0.15);
+  --bs-accordion-active-bg:#e6efec;
+  --bs-accordion-active-color:#2b2b2b;
+}
+
+.accordion-button:not(.collapsed){
+  background-color:#e6efec !important;
+  color:#2b2b2b !important;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <h1>Модель компетенций</h1>
+  <p>
+    Система определения, оценки и развития компетенций сотрудников.
+    Используется как основа для принятия решений в подборе, развитии, оценке и формировании кадрового резерва.
+  </p>
+
+  <div class="meta">
+    <span>HR</span>
+    <span>Развитие и оценка</span>
+    <span>Регламент</span>
+    <span>2026</span>
+  </div>
+</div>
+
+<div class="container py-4">
+
+<div class="row g-3 section">
+
+  <div class="col-md-4">
+    <div class="flow-step">
+      <h6 style="color:var(--accent)">Формирование модели</h6>
+      <ul>
+        <li>Определение ключевых компетенций</li>
+        <li>Разделение на базовые / функциональные / лидерские</li>
+        <li>Фиксация уровней владения</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="flow-step">
+      <h6 style="color:var(--accent)">Оценка сотрудников</h6>
+      <ul>
+        <li>Методики 180 / 360</li>
+        <li>Сравнение с целевым профилем</li>
+        <li>Определение зон развития</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="flow-step">
+      <h6 style="color:var(--accent)">Использование</h6>
+      <ul>
+        <li>Планы развития</li>
+        <li>Кадровый резерв</li>
+        <li>Карьерные маршруты</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<div class="section">
+  <div class="card p-4">
+    <h5>Распределение компетенций по типам</h5>
+    <canvas id="chart"></canvas>
+  </div>
+</div>
+
+<div class="section">
+  <div class="card p-4">
+    <h5>Пример анализа разрыва компетенций (роль: Team Lead)</h5>
+
+    <div class="mt-3">
+      <div>Лидерство (требуется 4 / факт 3)</div>
+      <div class="gap-bar">
+        <div class="gap-fill bg-warning" style="width:75%"></div>
+      </div>
+    </div>
+
+    <div class="mt-3">
+      <div>Коммуникация (4 / 4)</div>
+      <div class="gap-bar">
+        <div class="gap-fill bg-success" style="width:100%"></div>
+      </div>
+    </div>
+
+    <div class="mt-3">
+      <div>Управление задачами (4 / 2)</div>
+      <div class="gap-bar">
+        <div class="gap-fill bg-danger" style="width:50%"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="section">
+  <div class="card p-4">
+    <h5>Уровни компетенций</h5>
+
+    <div class="accordion mt-3">
+
+      <div class="level-card mb-3">
+        <button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#l1">
+          1 — Базовый уровень
+        </button>
+        <div id="l1" class="accordion-collapse collapse show">
+          <div class="accordion-body">
+            Выполнение задач под контролем. Ограниченная самостоятельность.
+          </div>
+        </div>
+      </div>
+
+      <div class="level-card mb-3">
+        <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#l2">
+          2 — Рабочий уровень
+        </button>
+        <div id="l2" class="accordion-collapse collapse">
+          <div class="accordion-body">
+            Самостоятельное выполнение задач. Участие в командной работе.
+          </div>
+        </div>
+      </div>
+
+      <div class="level-card mb-3">
+        <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#l3">
+          3 — Продвинутый уровень
+        </button>
+        <div id="l3" class="accordion-collapse collapse">
+          <div class="accordion-body">
+            Оптимизация процессов, помощь другим, влияние на решения.
+          </div>
+        </div>
+      </div>
+
+      <div class="level-card">
+        <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#l4">
+          4 — Экспертный уровень
+        </button>
+        <div id="l4" class="accordion-collapse collapse">
+          <div class="accordion-body">
+            Формирование стандартов, обучение сотрудников, стратегическое влияние.
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+new Chart(document.getElementById('chart'), {
+  type: 'pie',
+  data: {
+    labels: ['Базовые', 'Функциональные', 'Лидерские'],
+    datasets: [{
+      data: [40, 40, 20],
+      backgroundColor: [
+        '#ff4fa3',   // розовый
+        '#4fa3ff',   // синий
+        '#9b5de5'    // фиолетовый
+      ]
+    }]
+  },
+  options:{
+    plugins:{
+      legend:{position:'bottom'}
+    }
+  }
+});
+</script>
+
+</body>
+</html>
