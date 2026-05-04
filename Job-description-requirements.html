@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Требования к должностным инструкциям</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial;
+    color: #2b2b2b;
+    line-height: 1.6;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 28px;
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 28px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+  }
+
+  h1 {
+    margin: 0 0 14px 0;
+    font-size: 26px;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 13px;
+    color: #4b5563;
+    margin-bottom: 22px;
+  }
+
+  .meta span {
+    background: rgba(109,162,150,0.1);
+    border: 1px solid rgba(109,162,150,0.25);
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+  }
+
+  .tab {
+    padding: 8px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    border: 1px solid rgba(0,0,0,0.08);
+    background: #fff;
+    transition: 0.2s;
+  }
+
+  .tab.active {
+    background: rgba(109,162,150,0.18);
+    border-color: rgb(109,162,150);
+  }
+
+  /* =========================
+     SECTION TITLE
+     ========================= */
+  .title {
+    font-size: 15px;
+    font-weight: 600;
+    border-left: 4px solid rgb(109,162,150);
+    padding-left: 10px;
+    margin-bottom: 16px;
+  }
+
+  /* =========================
+     STRUCTURE (IMPROVED)
+     ========================= */
+  .structure {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .node {
+    display: flex;
+    gap: 14px;
+    padding: 12px 14px;
+    background: #f8fafc;
+    border: 1px solid rgba(0,0,0,0.05);
+    border-radius: 10px;
+    position: relative;
+  }
+
+  .node::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    margin-top: 6px;
+    border-radius: 50%;
+    background: rgb(109,162,150);
+    flex-shrink: 0;
+  }
+
+  .node-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .node-title {
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .node-text {
+    font-size: 13px;
+    color: #4b5563;
+  }
+
+  /* =========================
+     RULES (BETTER LOGIC VIEW)
+     ========================= */
+  .rules {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .rule {
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.06);
+    background: #ffffff;
+    position: relative;
+  }
+
+  .rule-tag {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgba(109,162,150,0.12);
+    color: #2b2b2b;
+    margin-bottom: 8px;
+  }
+
+  .rule-title {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+
+  .rule-text {
+    font-size: 13px;
+    color: #4b5563;
+  }
+
+  /* =========================
+     CHECKLIST (ONLY WHERE NEEDED)
+     ========================= */
+  .checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .check {
+    display: flex;
+    gap: 10px;
+    font-size: 14px;
+  }
+
+  .check input {
+    accent-color: rgb(109,162,150);
+  }
+
+  .check.done span {
+    text-decoration: line-through;
+    color: #9ca3af;
+  }
+
+  /* =========================
+     TIMELINE (MORE “REGULATORY”)
+     ========================= */
+  .timeline {
+    position: relative;
+    padding-left: 26px;
+  }
+
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: rgba(109,162,150,0.5);
+  }
+
+  .step {
+    position: relative;
+    margin-bottom: 16px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: 0.35s;
+  }
+
+  .step.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .dot {
+    position: absolute;
+    left: -18px;
+    top: 4px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgb(109,162,150);
+  }
+
+  .step-title {
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .step-text {
+    font-size: 13px;
+    color: #4b5563;
+  }
+
+  /* NOTE */
+  .note {
+    margin-top: 18px;
+    padding: 14px;
+    background: #e6f2f2;
+    border-left: 4px solid rgb(109,162,150);
+    border-radius: 10px;
+    font-size: 14px;
+  }
+
+  @media (max-width: 768px) {
+    .rules {
+      grid-template-columns: 1fr;
+    }
+  }
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="card">
+
+    <h1>Требования к должностным инструкциям</h1>
+
+    <div class="meta">
+      <span>HR-документ</span>
+      <span>Регламент</span>
+      <span>2026</span>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active" onclick="openTab('structure')">Структура</div>
+      <div class="tab" onclick="openTab('update')">Обновление</div>
+      <div class="tab" onclick="openTab('approval')">Согласование</div>
+    </div>
+
+    <div id="content"></div>
+
+  </div>
+</div>
+
+<script>
+
+const data = {
+
+structure: `
+<div class="title">Структура документа</div>
+
+<div class="structure">
+
+  <div class="node">
+    <div class="node-content">
+      <div class="node-title">Общие положения</div>
+      <div class="node-text">Роль, цель, границы применения документа</div>
+    </div>
+  </div>
+
+  <div class="node">
+    <div class="node-content">
+      <div class="node-title">Функции</div>
+      <div class="node-text">Основные обязанности и задачи должности</div>
+    </div>
+  </div>
+
+  <div class="node">
+    <div class="node-content">
+      <div class="node-title">Права</div>
+      <div class="node-text">Полномочия сотрудника в рамках роли</div>
+    </div>
+  </div>
+
+  <div class="node">
+    <div class="node-content">
+      <div class="node-title">Ответственность</div>
+      <div class="node-text">Зоны контроля и последствия исполнения</div>
+    </div>
+  </div>
+
+</div>
+`,
+
+update: `
+<div class="title">Правила обновления документа</div>
+
+<div class="rules">
+
+  <div class="rule">
+    <div class="rule-tag">Триггер</div>
+    <div class="rule-title">Изменение роли</div>
+    <div class="rule-text">При изменении функционала сотрудника документ пересматривается</div>
+  </div>
+
+  <div class="rule">
+    <div class="rule-tag">Триггер</div>
+    <div class="rule-title">Оргструктура</div>
+    <div class="rule-text">Изменения в структуре подразделения требуют обновления</div>
+  </div>
+
+  <div class="rule">
+    <div class="rule-tag">Регламент</div>
+    <div class="rule-title">Плановая ревизия</div>
+    <div class="rule-text">Не реже 1 раза в 12 месяцев проводится обязательная проверка</div>
+  </div>
+
+  <div class="rule">
+    <div class="rule-tag">Контроль</div>
+    <div class="rule-title">HR-валидация</div>
+    <div class="rule-text">Любые изменения проходят проверку HR-службой</div>
+  </div>
+
+</div>
+
+<div class="note">
+Изменения вступают в силу только после формального утверждения HR-процесса.
+</div>
+`,
+
+approval: `
+<div class="title">Процесс согласования</div>
+
+<div class="timeline">
+
+  <div class="step">
+    <div class="dot"></div>
+    <div class="step-title">Инициация</div>
+    <div class="step-text">HR или руководитель подразделения</div>
+  </div>
+
+  <div class="step">
+    <div class="dot"></div>
+    <div class="step-title">Подготовка версии</div>
+    <div class="step-text">Формирование новой редакции документа</div>
+  </div>
+
+  <div class="step">
+    <div class="dot"></div>
+    <div class="step-title">Согласование</div>
+    <div class="step-text">HR + руководитель + юридическая служба</div>
+  </div>
+
+  <div class="step">
+    <div class="dot"></div>
+    <div class="step-title">Утверждение</div>
+    <div class="step-text">Финальное утверждение руководителем</div>
+  </div>
+
+</div>
+
+<div class="note">
+Документ становится действующим только после финального утверждения.
+</div>
+`
+};
+
+function openTab(tab) {
+  document.getElementById('content').innerHTML = data[tab];
+
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+
+  init();
+}
+
+function init() {
+  const steps = document.querySelectorAll('.step');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('visible');
+    });
+  }, { threshold: 0.2 });
+
+  steps.forEach(s => observer.observe(s));
+}
+
+document.getElementById('content').innerHTML = data.structure;
+init();
+
+</script>
+
+</body>
+</html>
