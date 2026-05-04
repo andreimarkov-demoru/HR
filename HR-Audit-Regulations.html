@@ -12,24 +12,29 @@
     background: #f5f7fb;
     color: #2b2b2b;
     line-height: 1.6;
+    overflow-x: hidden;
   }
+
   .body {
     background: linear-gradient(190deg, #ffffff 0%, rgba(109, 162, 150, 0.85) 100%);
   }
-.container {
+
+  .container {
     max-width: 1000px;
     margin: 0 auto;
     padding: 24px;
   }
+
   .card {
     background: #ffffff;
     border-radius: 12px;
     padding: 24px;
     box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    width: 100%;
   }
 
   h1 {
-    margin: 0;
+    margin: 0 0 20px 0;
     font-size: 28px;
   }
 
@@ -45,7 +50,7 @@
     margin-bottom: 14px;
   }
 
-  /* ---------------- CHECKLIST ---------------- */
+  /* CHECKLIST */
   .checklist {
     display: flex;
     flex-direction: column;
@@ -69,7 +74,7 @@
     color: #9ca3af;
   }
 
-  /* ---------------- TIMELINE ---------------- */
+  /* TIMELINE */
   .timeline {
     position: relative;
     margin-left: 10px;
@@ -119,7 +124,7 @@
     color: #4b5563;
   }
 
-  /* ---------------- COLUMNS ---------------- */
+  /* COLUMNS */
   .columns {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -139,7 +144,6 @@
     font-size: 14px;
   }
 
-  /* NOTE */
   .note {
     margin-top: 30px;
     padding: 14px 16px;
@@ -149,135 +153,172 @@
     font-size: 14px;
   }
 
+  /* ADAPTIVE */
+  @media (max-width: 768px) {
+
+    .container {
+      padding: 16px;
+    }
+
+    .card {
+      padding: 18px;
+    }
+
+    .columns {
+      grid-template-columns: 1fr;
+    }
+
+    .timeline {
+      padding-left: 18px;
+    }
+
+    .dot {
+      left: -14px;
+      width: 8px;
+      height: 8px;
+    }
+
+    h1 {
+      font-size: 22px;
+    }
+
+    .title {
+      font-size: 15px;
+    }
+
+    .step-title {
+      font-size: 13px;
+    }
+
+    .step-text {
+      font-size: 12px;
+    }
+  }
+
 </style>
 </head>
 
 <body>
+
 <div class="body">
   <div class="container">
     <div class="card">
-<div class="header">
-  <h1>Регламент кадрового аудита</h1>
-</div>
 
-<div class="container">
+      <h1>Регламент кадрового аудита</h1>
 
-  <!-- 1 COLUMNS -->
-  <div class="section">
-    <div class="title">1. Объект аудита</div>
+      <!-- 1 -->
+      <div class="section">
+        <div class="title">1. Объект аудита</div>
 
-    <div class="columns">
-      <div class="col">
-        <h3>Документы</h3>
-        Личные дела<br>
-        Трудовые договоры<br>
-        Приказы
+        <div class="columns">
+          <div class="col">
+            <h3>Документы</h3>
+            Личные дела<br>
+            Трудовые договоры<br>
+            Приказы
+          </div>
+
+          <div class="col">
+            <h3>Системы</h3>
+            HR-база данных<br>
+            Архив документов<br>
+            Электронные согласия
+          </div>
+        </div>
       </div>
 
-      <div class="col">
-        <h3>Системы</h3>
-        HR-база данных<br>
-        Архив документов<br>
-        Электронные согласия
+      <!-- 2 -->
+      <div class="section">
+        <div class="title">2. Контрольные критерии</div>
+
+        <div class="checklist">
+          <label class="check">
+            <input type="checkbox" onchange="toggle(this)">
+            <span>Личные дела сотрудников сформированы полностью</span>
+          </label>
+
+          <label class="check">
+            <input type="checkbox" onchange="toggle(this)">
+            <span>Трудовые договоры актуальны</span>
+          </label>
+
+          <label class="check">
+            <input type="checkbox" onchange="toggle(this)">
+            <span>Должностные инструкции соответствуют ролям</span>
+          </label>
+
+          <label class="check">
+            <input type="checkbox" onchange="toggle(this)">
+            <span>HR-данные совпадают с документами</span>
+          </label>
+        </div>
       </div>
+
+      <!-- 3 -->
+      <div class="section">
+        <div class="title">3. Порядок проведения аудита</div>
+
+        <div class="timeline">
+
+          <div class="step">
+            <div class="dot"></div>
+            <div class="step-title">Формирование выборки</div>
+            <div class="step-text">Определение сотрудников для проверки</div>
+          </div>
+
+          <div class="step">
+            <div class="dot"></div>
+            <div class="step-title">Анализ документов</div>
+            <div class="step-text">Проверка комплектности и актуальности</div>
+          </div>
+
+          <div class="step">
+            <div class="dot"></div>
+            <div class="step-title">Сверка данных</div>
+            <div class="step-text">Сопоставление HR-системы и документов</div>
+          </div>
+
+          <div class="step">
+            <div class="dot"></div>
+            <div class="step-title">Фиксация отклонений</div>
+            <div class="step-text">Регистрация несоответствий</div>
+          </div>
+
+          <div class="step">
+            <div class="dot"></div>
+            <div class="step-title">Итоговый акт</div>
+            <div class="step-text">Формирование отчёта аудита</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="section">
+        <div class="title">4. Результаты</div>
+
+        <div class="columns">
+          <div class="col">Акт аудита</div>
+          <div class="col">Реестр нарушений</div>
+          <div class="col">План корректировок</div>
+          <div class="col">Отчет HR-службы</div>
+        </div>
+
+        <div class="note">
+          Ответственность за аудит несёт HR-служба совместно с внутренним контролем.
+        </div>
+      </div>
+
     </div>
   </div>
-
-  <!-- 2 CHECKLIST -->
-  <div class="section">
-    <div class="title">2. Контрольные критерии</div>
-
-    <div class="checklist">
-
-      <label class="check">
-        <input type="checkbox" onchange="toggle(this)">
-        <span>Личные дела сотрудников сформированы полностью</span>
-      </label>
-
-      <label class="check">
-        <input type="checkbox" onchange="toggle(this)">
-        <span>Трудовые договоры актуальны</span>
-      </label>
-
-      <label class="check">
-        <input type="checkbox" onchange="toggle(this)">
-        <span>Должностные инструкции соответствуют ролям</span>
-      </label>
-
-      <label class="check">
-        <input type="checkbox" onchange="toggle(this)">
-        <span>HR-данные совпадают с документами</span>
-      </label>
-
-    </div>
-  </div>
-
-  <!-- 3 TIMELINE -->
-  <div class="section">
-    <div class="title">3. Порядок проведения аудита</div>
-
-    <div class="timeline">
-
-      <div class="step">
-        <div class="dot"></div>
-        <div class="step-title">Формирование выборки</div>
-        <div class="step-text">Определение сотрудников для проверки</div>
-      </div>
-
-      <div class="step">
-        <div class="dot"></div>
-        <div class="step-title">Анализ документов</div>
-        <div class="step-text">Проверка комплектности и актуальности</div>
-      </div>
-
-      <div class="step">
-        <div class="dot"></div>
-        <div class="step-title">Сверка данных</div>
-        <div class="step-text">Сопоставление HR-системы и документов</div>
-      </div>
-
-      <div class="step">
-        <div class="dot"></div>
-        <div class="step-title">Фиксация отклонений</div>
-        <div class="step-text">Регистрация несоответствий</div>
-      </div>
-
-      <div class="step">
-        <div class="dot"></div>
-        <div class="step-title">Итоговый акт</div>
-        <div class="step-text">Формирование отчёта аудита</div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- 4 NORMAL BLOCK -->
-  <div class="section">
-    <div class="title">4. Результаты</div>
-
-    <div class="columns">
-      <div class="col">Акт аудита</div>
-      <div class="col">Реестр нарушений</div>
-      <div class="col">План корректировок</div>
-      <div class="col">Отчет HR-службы</div>
-    </div>
-
-    <div class="note">
-      Ответственность за аудит несёт HR-служба совместно с внутренним контролем.
-    </div>
-  </div>
-
 </div>
-</div>
-</div>
-</div>
+
 <script>
 function toggle(el) {
   const item = el.closest('.check');
   item.classList.toggle('done', el.checked);
 }
 
-/* animation on scroll */
 const steps = document.querySelectorAll('.step');
 
 const observer = new IntersectionObserver(entries => {
