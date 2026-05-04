@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ответственность за ведение личных дел</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background: #f5f7fb;
+    color: #2b2b2b;
+  }
+  .body {
+    background: linear-gradient(190deg, #ffffff 0%, rgba(109, 162, 150, 0.85) 100%);
+      height: 100vh;
+  }
+
+  .layout {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    padding: 32px;
+    box-sizing: border-box;
+  }
+
+  .sidebar {
+    width: 240px;
+    background: #ffffff;
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 12px;
+    padding: 16px;
+    height: fit-content;
+    position: sticky;
+    top: 20px;
+  }
+
+  .sidebar h2 {
+    font-size: 12px;
+    color: #6b7280;
+    margin: 0 0 12px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .nav-item {
+    padding: 9px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    margin-bottom: 6px;
+    transition: 0.2s;
+    color: #374151;
+  }
+
+  .nav-item:hover {
+    background: rgba(109, 162, 150, 0.08);
+  }
+
+  .nav-item.active {
+    background: rgba(109, 162, 150, 0.12);
+    border-left: 3px solid rgb(109, 162, 150);
+  }
+
+  .main {
+    width: 980px;
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 34px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  }
+
+  h1 {
+    margin-top: 0;
+    font-size: 28px;
+  }
+
+  .meta {
+    font-size: 13px;
+    color: #4b5563;
+    margin-bottom: 18px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .meta span {
+    background: rgba(109, 162, 150, 0.1);
+    border: 1px solid rgba(109, 162, 150, 0.25);
+    padding: 5px 12px;
+    border-radius: 999px;
+  }
+
+  .block {
+    background: #fafafa;
+    border: 1px solid rgba(0,0,0,0.05);
+    border-radius: 10px;
+    padding: 16px;
+    margin-top: 14px;
+  }
+
+  .block img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 12px;
+  }
+
+  .block h3 {
+    margin: 0 0 10px 0;
+    font-size: 16px;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+
+  li {
+    margin-bottom: 7px;
+    font-size: 14px;
+  }
+
+  .note {
+    background: #e6f2f2;
+    border-left: 4px solid rgb(109, 162, 150);
+    padding: 14px 16px;
+    border-radius: 8px;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+
+  @media (max-width: 1100px) {
+    .main { width: 100%; }
+  }
+
+  @media (max-width: 900px) {
+    .layout {
+      flex-direction: column;
+      align-items: center;
+    }
+    .sidebar {
+      width: 100%;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+    }
+    .nav-item { white-space: nowrap; }
+  }
+</style>
+</head>
+
+<div>
+<div class="body">
+<div class="layout">
+
+  <div class="sidebar">
+    <h2>Разделы</h2>
+    <div class="nav-item active" onclick="show('hr')">HR-служба</div>
+    <div class="nav-item" onclick="show('manager')">Руководители</div>
+    <div class="nav-item" onclick="show('admin')">Администрирование</div>
+    <div class="nav-item" onclick="show('control')">Контроль</div>
+  </div>
+
+  <div class="main">
+    <div class="card">
+
+      <h1>Ответственность за ведение личных дел</h1>
+
+      <div class="meta">
+        <span>Проект: HR</span>
+        <span>Регламент</span>
+        <span>2026</span>
+      </div>
+
+      <div id="content"></div>
+
+    </div>
+  </div>
+
+</div>
+</div>
+<script>
+const data = {
+  hr: `
+    <div class="block">
+      <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=1200&q=80&auto=format&fit=crop" />
+      <h3>HR-служба — ключевая ответственность</h3>
+      <ul>
+        <li>Формирование и ведение личных дел сотрудников</li>
+        <li>Контроль актуальности документов</li>
+        <li>Хранение кадровых данных</li>
+        <li>Подготовка к аудиту</li>
+      </ul>
+    </div>
+
+    <div class="note">HR-служба является владельцем процесса и несёт полную ответственность за корректность данных.</div>
+  `,
+
+  manager: `
+    <div class="block">
+      <img src="https://images.unsplash.com/photo-1552581234-26160f608093?w=1200&q=80&auto=format&fit=crop" />
+      <h3>Руководители подразделений</h3>
+      <ul>
+        <li>Инициирование кадровых изменений</li>
+        <li>Подтверждение должностных инструкций</li>
+        <li>Передача данных в HR</li>
+        <li>Участие в оценке сотрудников</li>
+      </ul>
+    </div>
+  `,
+
+  admin: `
+    <div class="block">
+      <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&q=80&auto=format&fit=crop" />
+      <h3>HR-администрирование</h3>
+      <ul>
+        <li>Архивирование документов</li>
+        <li>Проверка комплектности личных дел</li>
+        <li>Поддержка структуры хранения</li>
+      </ul>
+    </div>
+  `,
+
+  control: `
+    <div class="block">
+      <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1200&q=80&auto=format&fit=crop" />
+      <h3>Контроль исполнения</h3>
+      <ul>
+        <li>Плановые проверки (1 раз в год)</li>
+        <li>Выборочные аудиты</li>
+        <li>Фиксация нарушений</li>
+        <li>Устранение несоответствий</li>
+      </ul>
+    </div>
+  `
+};
+
+function show(section) {
+  document.getElementById('content').innerHTML = data[section];
+
+  document.querySelectorAll('.nav-item').forEach(el => {
+    el.classList.remove('active');
+  });
+
+  event.target.classList.add('active');
+}
+
+document.getElementById('content').innerHTML = data.hr;
+</script>
+
+</body>
+</html>
