@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Сроки актуализации документов</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background: #f5f7fb;
+    color: #2b2b2b;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, rgba(109,162,150,0.15), #ffffff);
+    padding: 28px 24px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+
+  .header h1 {
+    margin: 0;
+    font-size: 28px;
+  }
+
+  .header p {
+    margin: 8px 0 0 0;
+    color: #4b5563;
+    max-width: 800px;
+  }
+
+  /* CONTAINER */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 28px 24px;
+  }
+
+  /* META */
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+
+  .meta span {
+    background: rgba(109, 162, 150, 0.1);
+    border: 1px solid rgba(109, 162, 150, 0.25);
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+  }
+
+  /* GRID */
+  .grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 24px;
+  }
+
+  @media (max-width: 900px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* CARD */
+  .card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  }
+
+  h2 {
+    margin-top: 0;
+    font-size: 18px;
+    border-left: 4px solid rgb(109,162,150);
+    padding-left: 10px;
+  }
+
+  /* TIMELINE */
+  .timeline {
+    position: relative;
+    padding-left: 20px;
+  }
+
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 6px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: rgba(109,162,150,0.3);
+  }
+
+  .item {
+    position: relative;
+    margin-bottom: 18px;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    background: rgb(109,162,150);
+    border-radius: 50%;
+    position: absolute;
+    left: -19px;
+    top: 6px;
+  }
+
+  .item h3 {
+    margin: 0;
+    font-size: 15px;
+  }
+
+  .item p {
+    margin: 4px 0 0 0;
+    font-size: 14px;
+    color: #4b5563;
+  }
+
+  /* TABLE STYLE BLOCK */
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .table tr {
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+
+  .table td {
+    padding: 10px 0;
+    font-size: 14px;
+  }
+
+  .tag {
+    display: inline-block;
+    background: rgba(109,162,150,0.12);
+    border: 1px solid rgba(109,162,150,0.25);
+    padding: 3px 8px;
+    border-radius: 999px;
+    font-size: 12px;
+  }
+
+  /* NOTE */
+  .note {
+    margin-top: 18px;
+    padding: 14px 16px;
+    border-left: 4px solid rgb(109,162,150);
+    background: #e6f2f2;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <div class="container">
+    <h1>Сроки актуализации документов</h1>
+    <p>Регламент определяет периодичность пересмотра кадровых документов, порядок обновления и ответственность за поддержание актуальности информации.</p>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="meta">
+    <span>Проект: HR</span>
+    <span>Регламент</span>
+    <span>2026</span>
+    <span>Документ: версия 1.0</span>
+  </div>
+
+  <div class="grid">
+
+    <!-- LEFT: TIMELINE -->
+    <div class="card">
+      <h2>Периодичность обновления</h2>
+
+      <div class="timeline">
+
+        <div class="item">
+          <div class="dot"></div>
+          <h3>При изменении данных сотрудника</h3>
+          <p>Обновление производится немедленно после кадрового события</p>
+        </div>
+
+        <div class="item">
+          <div class="dot"></div>
+          <h3>Ежеквартальная проверка</h3>
+          <p>HR-служба проводит сверку актуальности личных дел</p>
+        </div>
+
+        <div class="item">
+          <div class="dot"></div>
+          <h3>Годовой аудит</h3>
+          <p>Полная проверка комплектности и корректности документов</p>
+        </div>
+
+        <div class="item">
+          <div class="dot"></div>
+          <h3>Изменение законодательства</h3>
+          <p>Документы обновляются в течение 30 дней после изменений</p>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- RIGHT: RULES -->
+    <div class="card">
+
+      <h2>Правила актуализации</h2>
+
+      <table class="table">
+        <tr>
+          <td>Личные данные</td>
+          <td><span class="tag">немедленно</span></td>
+        </tr>
+        <tr>
+          <td>Должностные инструкции</td>
+          <td><span class="tag">при изменении роли</span></td>
+        </tr>
+        <tr>
+          <td>Трудовые договоры</td>
+          <td><span class="tag">при изменениях условий</span></td>
+        </tr>
+        <tr>
+          <td>Оценка персонала</td>
+          <td><span class="tag">раз в год</span></td>
+        </tr>
+        <tr>
+          <td>Обучение и развитие</td>
+          <td><span class="tag">ежеквартально</span></td>
+        </tr>
+      </table>
+
+      <div class="note">
+        Несвоевременное обновление документов рассматривается как нарушение кадрового регламента и фиксируется в рамках аудита.
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+</html>
