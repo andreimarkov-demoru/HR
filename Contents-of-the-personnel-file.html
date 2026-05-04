@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Состав личного дела сотрудника</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background: #f5f7fb;
+    color: #2b2b2b;
+    line-height: 1.6;
+  }
+  .body {
+    background: linear-gradient(190deg, #ffffff 0%, rgba(109, 162, 150, 0.85) 100%);
+);
+  }
+
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 24px;
+  }
+
+  .card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  }
+
+  h1 {
+    margin-top: 0;
+    font-size: 26px;
+  }
+
+  h2 {
+    margin-top: 32px;
+    font-size: 20px;
+    border-left: 4px solid #294444;
+    padding-left: 12px;
+  }
+
+  p {
+    color: #555;
+  }
+
+  ul {
+    padding-left: 20px;
+  }
+
+  li {
+    margin-bottom: 8px;
+  }
+
+  .note {
+    background: #e6f2f2;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  @media (min-width: 768px) {
+    .grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .block {
+    background: #e6f2f2;
+    border: 1px solid #e6e9f2;
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .block h3 {
+    margin-top: 0;
+    font-size: 16px;
+  }
+
+  .meta {
+  font-size: 13px;
+  color: #4b5563;
+  margin-bottom: 16px;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.meta span {
+  background: rgba(109, 162, 150, 0.1);
+  border: 1px solid rgba(109, 162, 150, 0.25);
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+</style>
+</head>
+
+<body>
+  <div class="body">
+
+<div class="container">
+  <div class="card">
+
+    <h1>Состав личного дела сотрудника</h1>
+
+    <div class="meta">
+  <span>Проект: Управление персоналом (HR)</span>
+  <span>Тип: Регламент</span>
+  <span>Актуально: 2026</span>
+</div>
+
+    <p>
+      Личное дело сотрудника представляет собой совокупность документов, содержащих
+      персональные данные, сведения о трудовой деятельности и развитии сотрудника.
+      Ведение личных дел осуществляется HR-службой с целью обеспечения корректного
+      кадрового учета и соответствия требованиям внутренней политики и законодательства.
+    </p>
+
+    <div class="note">
+      Все документы в составе личного дела должны храниться в актуальном состоянии и быть доступны для кадрового аудита.
+    </div>
+
+    <h2>1. Обязательные документы</h2>
+
+    <div class="grid">
+
+      <div class="block">
+        <h3>Документы при приеме на работу</h3>
+        <ul>
+          <li>Трудовой договор (подписанный сторонами)</li>
+          <li>Заявление о приеме на работу</li>
+          <li>Копия паспорта</li>
+          <li>Документы об образовании и квалификации</li>
+          <li>Резюме кандидата</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <h3>Кадровые документы</h3>
+        <ul>
+          <li>Приказ о приеме на работу</li>
+          <li>Приказы о переводах и изменениях условий</li>
+          <li>Приказы на отпуск</li>
+          <li>Дополнительные соглашения</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <h2>2. Документы по деятельности сотрудника</h2>
+
+    <div class="grid">
+
+      <div class="block">
+        <h3>Оценка и развитие</h3>
+        <ul>
+          <li>Результаты оценочных сессий (180/360)</li>
+          <li>Индивидуальные планы развития</li>
+          <li>Отчеты по обучению</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <h3>Компетенции и роли</h3>
+        <ul>
+          <li>Профиль компетенций сотрудника</li>
+          <li>Должностная инструкция</li>
+          <li>История изменений роли</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <h2>3. Дополнительные документы</h2>
+
+    <ul>
+      <li>Заявления сотрудника (отпуск, перевод, изменение данных)</li>
+      <li>Согласия на обработку персональных данных</li>
+      <li>Документы по дисциплинарным мерам (при наличии)</li>
+      <li>Документы по участию в корпоративных программах</li>
+    </ul>
+
+    <h2>4. Принципы формирования личного дела</h2>
+
+    <ul>
+      <li>Документы размещаются в хронологическом порядке</li>
+      <li>Каждый документ должен иметь дату и ответственное лицо</li>
+      <li>Дубликаты и устаревшие версии не хранятся</li>
+      <li>Все изменения фиксируются и доступны для проверки</li>
+    </ul>
+
+    <div class="note">
+      Личное дело сотрудника используется при проведении кадрового аудита, оценке персонала и подготовке управленческих решений.
+    </div>
+
+  </div>
+</div>
+  </div>
+</body>
+</html>
