@@ -131,6 +131,27 @@ body{
   .kpi-grid{grid-template-columns:1fr 1fr;}
   .grid{grid-template-columns:1fr;}
 }
+
+   /* FIX RESPONSIVE CHARTS */
+.card canvas{
+  width: 100% !important;
+  max-width: 100%;
+  height: auto !important;
+}
+
+#segments{
+  max-height: 260px;
+}
+
+.grid > div:last-child .card{
+  overflow: hidden;
+}
+
+@media(max-width:1100px){
+  .subgrid{
+    grid-template-columns:1fr;
+  }
+}
 </style>
 </head>
 
