@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>HR · Привлечение кандидатов · Каналы поиска</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #f5f7fa;
+      --bg-card: #ffffff;
+      --border: #e2e8f0;
+      --border-strong: #cbd5e1;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --accent: #2563eb;
+      --accent-soft: #dbeafe;
+      --ok: #16a34a;
+      --ok-soft: #dcfce7;
+      --warn: #f59e0b;
+      --warn-soft: #fef3c7;
+      --crit: #dc2626;
+      --crit-soft: #fee2e2;
+      --radius-lg: 14px;
+      --radius-md: 10px;
+      --radius-sm: 999px;
+      --shadow: 0 4px 18px rgba(0,0,0,0.06);
+      --font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text-main);
+    }
+
+    .shell {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #2563eb, #3b82f6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 700;
+      font-size: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .brand-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .header-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .pill {
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: #fff;
+    }
+
+    /* HERO DASHBOARD */
+    .hero {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+    }
+
+    .hero-title {
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    .hero-sub {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      max-width: 520px;
+    }
+
+    .hero-kpi-grid {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    @media (max-width: 900px) {
+      .hero-kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .kpi {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .kpi-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .kpi-value {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .kpi-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .hero-chart {
+      height: 180px;
+      position: relative;
+    }
+
+    /* SECTION TITLES */
+    .section-title {
+      font-size: 14px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 10px;
+    }
+
+    /* CHANNEL CARDS */
+    .card-grid {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 1100px) {
+      .card-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 700px) {
+      .card-grid { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-name {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .status {
+      padding: 3px 8px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+    }
+
+    .good { background: var(--ok-soft); color: var(--ok); }
+    .good .status-dot { background: var(--ok); }
+
+    .medium { background: var(--warn-soft); color: var(--warn); }
+    .medium .status-dot { background: var(--warn); }
+
+    .bad { background: var(--crit-soft); color: var(--crit); }
+    .bad .status-dot { background: var(--crit); }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+      font-size: 13px;
+    }
+
+    .metric-label { color: var(--text-muted); font-size: 12px; }
+    .metric-value { font-weight: 600; }
+
+    .progress {
+      margin-top: 6px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 6px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 999px;
+    }
+
+    .fill-good { background: #16a34a; }
+    .fill-medium { background: #f59e0b; }
+    .fill-bad { background: #dc2626; }
+
+    /* FUNNEL */
+    .funnel {
+      margin-top: 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .funnel-header {
+      font-size: 14px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      color: var(--text-muted);
+    }
+
+    .funnel-step {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+      align-items: center;
+      font-size: 13px;
+    }
+
+    .funnel-bar {
+      height: 10px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .funnel-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 999px;
+    }
+
+    .funnel-drop {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* COMPARISON */
+    .compare {
+      margin-top: 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th, td {
+      padding: 8px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+
+    th { color: var(--text-muted); font-weight: 500; }
+
+    .badge {
+      padding: 3px 8px;
+      border-radius: var(--radius-sm);
+      font-size: 11px;
+      border: 1px solid var(--border-strong);
+      background: #f8fafc;
+    }
+
+    .best { border-color: var(--ok); color: var(--ok); }
+    .worst { border-color: var(--crit); color: var(--crit); }
+
+    /* CHARTS */
+    .charts {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 900px) {
+      .charts { grid-template-columns: 1fr; }
+    }
+
+    .chart-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .chart-title {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .chart-container {
+      height: 220px;
+      position: relative;
+    }
+
+    /* STRATEGY */
+    .strategy {
+      margin-top: 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .strategy { grid-template-columns: 1fr; }
+    }
+
+    .strategy-title {
+      font-size: 14px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .strategy-list {
+      font-size: 13px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .strategy-pill-row {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .strategy-pill {
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: #f8fafc;
+      font-size: 12px;
+    }
+
+    .green { border-color: var(--ok); color: var(--ok); }
+    .yellow { border-color: var(--warn); color: var(--warn); }
+    .red { border-color: var(--crit); color: var(--crit); }
+  </style>
+</head>
+
+<body>
+<div class="shell">
+
+  <!-- HEADER -->
+  <header>
+    <div class="brand">
+      <div class="brand-logo">HR</div>
+      <div>
+        <div class="brand-title">Привлечение кандидатов</div>
+        <div class="brand-sub">Каналы поиска · Performance dashboard</div>
+      </div>
+    </div>
+    <div class="header-meta">
+      <div class="pill">Период: последние 90 дней</div>
+      <div class="pill">Sourcing efficiency</div>
+    </div>
+  </header>
+
+  <!-- HERO DASHBOARD -->
+  <section class="hero">
+    <div>
+      <div class="hero-title">Панель привлечения кандидатов</div>
+      <div class="hero-sub">
+        Где мы берём кандидатов, сколько это стоит и какие каналы дают лучший результат.
+      </div>
+
+      <div class="hero-kpi-grid">
+        <div class="kpi">
+          <div class="kpi-label">Всего кандидатов</div>
+          <div class="kpi-value">1 284</div>
+          <div class="kpi-sub">7,3 кандидата на вакансию</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Cost per hire</div>
+          <div class="kpi-value">1 020 €</div>
+          <div class="kpi-sub">Средняя стоимость закрытия</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Конверсия в интервью</div>
+          <div class="kpi-value">31%</div>
+          <div class="kpi-sub">Отклик → интервью</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Time‑to-hire</div>
+          <div class="kpi-value">34 дня</div>
+          <div class="kpi-sub">Медиана</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="hero-chart">
+        <canvas id="heroChart"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHANNEL CARDS -->
+  <section>
+    <div class="section-title">Каналы поиска кандидатов</div>
+
+    <div class="card-grid">
+
+      <!-- Job boards -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-name">Job boards</div>
+          <div class="status medium"><span class="status-dot"></span>Средний</div>
+        </div>
+        <div class="metrics">
+          <div><div class="metric-label">Кандидатов</div><div class="metric-value">512</div></div>
+          <div><div class="metric-label">Conversion</div><div class="metric-value">24%</div></div>
+          <div><div class="metric-label">Cost per hire</div><div class="metric-value">1 350 €</div></div>
+          <div><div class="metric-label">Time‑to-fill</div><div class="metric-value">41 дн</div></div>
+        </div>
+        <div class="progress">
+          <div class="metric-label">Качество</div>
+          <div class="progress-bar"><div class="progress-fill fill-medium" style="width:62%"></div></div>
+        </div>
+      </div>
+
+      <!-- LinkedIn -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-name">LinkedIn</div>
+          <div class="status good"><span class="status-dot"></span>Эффективный</div>
+        </div>
+        <div class="metrics">
+          <div><div class="metric-label">Кандидатов</div><div class="metric-value">286</div></div>
+          <div><div class="metric-label">Conversion</div><div class="metric-value">37%</div></div>
+          <div><div class="metric-label">Cost per hire</div><div class="metric-value">980 €</div></div>
+          <div><div class="metric-label">Time‑to-fill</div><div class="metric-value">32 дн</div></div>
+        </div>
+        <div class="progress">
+          <div class="metric-label">Качество</div>
+          <div class="progress-bar"><div class="progress-fill fill-good" style="width:82%"></div></div>
+        </div>
+      </div>
+
+      <!-- Referrals -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-name">Рефералы</div>
+          <div class="status good"><span class="status-dot"></span>Лучший</div>
+        </div>
+        <div class="metrics">
+          <div><div class="metric-label">Кандидатов</div><div class="metric-value">184</div></div>
+          <div><div class="metric-label">Conversion</div><div class="metric-value">49%</div></div>
+          <div><div class="metric-label">Cost per hire</div><div class="metric-value">720 €</div></div>
+          <div><div class="metric-label">Time‑to-fill</div><div class="metric-value">26 дн</div></div>
+        </div>
+        <div class="progress">
+          <div class="metric-label">Качество</div>
+          <div class="progress-bar"><div class="progress-fill fill-good" style="width:92%"></div></div>
+        </div>
+      </div>
+
+      <!-- Career site -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-name">Карьерный сайт</div>
+          <div class="status medium"><span class="status-dot"></span>Стабильный</div>
+        </div>
+        <div class="metrics">
+          <div><div class="metric-label">Кандидатов</div><div class="metric-value">156</div></div>
+          <div><div class="metric-label">Conversion</div><div class="metric-value">29%</div></div>
+          <div><div class="metric-label">Cost per hire</div><div class="metric-value">890 €</div></div>
+          <div><div class="metric-label">Time‑to-fill</div><div class="metric-value">33 дн</div></div>
+        </div>
+        <div class="progress">
+          <div class="metric-label">Качество</div>
+          <div class="progress-bar"><div class="progress-fill fill-medium" style="width:70%"></div></div>
+        </div>
+      </div>
+
+      <!-- Agencies -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-name">Агентства</div>
+          <div class="status bad"><span class="status-dot"></span>Дорогой</div>
+        </div>
+        <div class="metrics">
+          <div><div class="metric-label">Кандидатов</div><div class="metric-value">74</div></div>
+          <div><div class="metric-label">Conversion</div><div class="metric-value">34%</div></div>
+          <div><div class="metric-label">Cost per hire</div><div class="metric-value">2 450 €</div></div>
+          <div><div class="metric-label">Time‑to-fill</div><div class="metric-value">29 дн</div></div>
+        </div>
+        <div class="progress">
+          <div class="metric-label">Качество</div>
+          <div class="progress-bar"><div class="progress-fill fill-good" style="width:80%"></div></div>
+        </div>
+      </div>
+
+      <!-- Cold sourcing -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-name">Холодный поиск</div>
+          <div class="status bad"><span class="status-dot"></span>Слабый</div>
+        </div>
+        <div class="metrics">
+          <div><div class="metric-label">Кандидатов</div><div class="metric-value">72</div></div>
+          <div><div class="metric-label">Conversion</div><div class="metric-value">17%</div></div>
+          <div><div class="metric-label">Cost per hire</div><div class="metric-value">1 580 €</div></div>
+          <div><div class="metric-label">Time‑to-fill</div><div class="metric-value">45 дн</div></div>
+        </div>
+        <div class="progress">
+          <div class="metric-label">Качество</div>
+          <div class="progress-bar"><div class="progress-fill fill-bad" style="width:48%"></div></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FUNNEL -->
+  <section class="funnel">
+    <div class="funnel-header">
+      <span>Воронка привлечения кандидатов</span>
+      <span>Просмотры → Найм · все каналы</span>
+    </div>
+
+    <div class="funnel-step">
+      <div>Просмотры</div>
+      <div class="funnel-bar"><div class="funnel-fill" style="width:100%"></div></div>
+      <div class="funnel-drop">100% · 42 000 просмотров</div>
+    </div>
+    <div class="funnel-step">
+      <div>Отклики</div>
+      <div class="funnel-bar"><div class="funnel-fill" style="width:18%"></div></div>
+      <div class="funnel-drop">18% · 7 560 откликов</div>
+    </div>
+    <div class="funnel-step">
+      <div>Скрининг</div>
+      <div class="funnel-bar"><div class="funnel-fill" style="width:11%"></div></div>
+      <div class="funnel-drop">11% · 4 620 кандидатов</div>
+    </div>
+    <div class="funnel-step">
+      <div>Интервью</div>
+      <div class="funnel-bar"><div class="funnel-fill" style="width:6%"></div></div>
+      <div class="funnel-drop">6% · 2 520 интервью</div>
+    </div>
+    <div class="funnel-step">
+      <div>Оффер</div>
+      <div class="funnel-bar"><div class="funnel-fill" style="width:3%"></div></div>
+      <div class="funnel-drop">3% · 1 260 офферов</div>
+    </div>
+    <div class="funnel-step">
+      <div>Найм</div>
+      <div class="funnel-bar"><div class="funnel-fill" style="width:2.4%"></div></div>
+      <div class="funnel-drop">2,4% · 1 008 выходов</div>
+    </div>
+  </section>
+
+  <!-- COMPARISON -->
+  <section class="compare">
+    <div class="section-title" style="margin-top:0;">Сравнение каналов</div>
+    <table>
+      <thead>
+      <tr>
+        <th>Канал</th>
+        <th>Cost per hire</th>
+        <th>Conversion rate</th>
+        <th>Time‑to-fill</th>
+        <th>Качество</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>Рефералы</td>
+        <td>720 €</td>
+        <td>49%</td>
+        <td>26 дней</td>
+        <td>9,2 / 10</td>
+        <td><span class="badge best">Лучший канал</span></td>
+      </tr>
+      <tr>
+        <td>LinkedIn</td>
+        <td>980 €</td>
+        <td>37%</td>
+        <td>32 дня</td>
+        <td>8,4 / 10</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Карьерный сайт</td>
+        <td>890 €</td>
+        <td>29%</td>
+        <td>33 дня</td>
+        <td>7,6 / 10</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Job boards</td>
+        <td>1 350 €</td>
+        <td>24%</td>
+        <td>41 день</td>
+        <td>6,2 / 10</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Агентства</td>
+        <td>2 450 €</td>
+        <td>34%</td>
+        <td>29 дней</td>
+        <td>8,0 / 10</td>
+        <td><span class="badge">Точечный канал</span></td>
+      </tr>
+      <tr>
+        <td>Холодный поиск</td>
+        <td>1 580 €</td>
+        <td>17%</td>
+        <td>45 дней</td>
+        <td>5,1 / 10</td>
+        <td><span class="badge worst">Худший канал</span></td>
+      </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- CHARTS -->
+  <section class="charts">
+    <div class="chart-card">
+      <div class="chart-title">Распределение кандидатов по каналам</div>
+      <div class="chart-container">
+        <canvas id="distributionChart"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Стоимость vs качество кандидатов</div>
+      <div class="chart-container">
+        <canvas id="costQualityChart"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- STRATEGY -->
+  <section class="strategy">
+    <div>
+      <div class="strategy-title">Когда использовать канал</div>
+      <div class="strategy-list">
+        <div><strong>Рефералы:</strong> ключевые роли, дефицитные специалисты, быстрый найм в существующие команды.</div>
+        <div><strong>LinkedIn:</strong> middle / senior, международный рынок, продуктовые и tech‑позиции.</div>
+        <div><strong>Job boards:</strong> массовый найм, junior‑позиции, back‑office.</div>
+        <div><strong>Агентства:</strong> C‑level, редкие компетенции, закрытие “горящих” позиций.</div>
+        <div><strong>Карьерный сайт:</strong> бренд‑позиции, долгосрочный pipeline, кандидаты “по интересу”.</div>
+        <div><strong>Холодный поиск:</strong> точечный поиск, когда воронка не наполняется другими каналами.</div>
+      </div>
+    </div>
+    <div>
+      <div class="strategy-title">Ограничения, бюджет и приоритеты</div>
+      <div class="strategy-list">
+        <div><strong>Бюджетирование:</strong> не более 35% бюджета на агентства и холодный поиск; минимум 25% бюджета на реферальную программу.</div>
+        <div><strong>Приоритеты:</strong> сначала реферальный канал и карьерный сайт, затем LinkedIn и job boards, агентства — только по согласованию.</div>
+        <div><strong>Ограничения:</strong> отключать каналы с cost per hire &gt; 2 000 € и conversion rate &lt; 15% на период оптимизации.</div>
+        <div><strong>Sourcing efficiency:</strong> целевой показатель — не менее 3 релевантных кандидатов на вакансию из топ‑3 каналов.</div>
+      </div>
+      <div class="strategy-pill-row">
+        <span class="strategy-pill green">Фокус: рефералы + LinkedIn</span>
+        <span class="strategy-pill yellow">Job boards: оптимизация бюджета</span>
+        <span class="strategy-pill red">Холодный поиск: только при дефиците</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  (function () {
+    const heroCtx = document.getElementById('heroChart');
+    if (heroCtx) {
+      new Chart(heroCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Job boards', 'LinkedIn', 'Рефералы', 'Карьерный сайт', 'Агентства', 'Холодный поиск'],
+          datasets: [{
+            data: [512, 286, 184, 156, 74, 72],
+            backgroundColor: [
+              '#2563eb',
+              '#16a34a',
+              '#22c55e',
+              '#a855f7',
+              '#f97316',
+              '#dc2626'
+            ],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '60%',
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function (ctx) {
+                  return ' ' + ctx.label + ': ' + ctx.raw + ' кандидатов';
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    const distCtx = document.getElementById('distributionChart');
+    if (distCtx) {
+      new Chart(distCtx, {
+        type: 'bar',
+        data: {
+          labels: ['Job boards', 'LinkedIn', 'Рефералы', 'Карьерный сайт', 'Агентства', 'Холодный поиск'],
+          datasets: [{
+            label: 'Кандидатов',
+            data: [512, 286, 184, 156, 74, 72],
+            backgroundColor: '#2563eb'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function (ctx) {
+                  return ' ' + ctx.raw + ' кандидатов';
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: '#64748b', font: { size: 11 } },
+              grid: { color: '#e2e8f0' }
+            },
+            y: {
+              ticks: { color: '#64748b', font: { size: 11 } },
+              grid: { color: '#e2e8f0' }
+            }
+          }
+        }
+      });
+    }
+
+    const costQualityCtx = document.getElementById('costQualityChart');
+    if (costQualityCtx) {
+      new Chart(costQualityCtx, {
+        type: 'scatter',
+        data: {
+          datasets: [
+            { label: 'Job boards', data: [{ x: 1350, y: 6.2 }], backgroundColor: '#2563eb' },
+            { label: 'LinkedIn', data: [{ x: 980, y: 8.4 }], backgroundColor: '#16a34a' },
+            { label: 'Рефералы', data: [{ x: 720, y: 9.2 }], backgroundColor: '#22c55e' },
+            { label: 'Карьерный сайт', data: [{ x: 890, y: 7.6 }], backgroundColor: '#a855f7' },
+            { label: 'Агентства', data: [{ x: 2450, y: 8.0 }], backgroundColor: '#f97316' },
+            { label: 'Холодный поиск', data: [{ x: 1580, y: 5.1 }], backgroundColor: '#dc2626' }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { color: '#64748b', font: { size: 11 } }
+            },
+            tooltip: {
+              callbacks: {
+                label: function (ctx) {
+                  return ' ' + ctx.dataset.label + ': ' +
+                    ctx.raw.x + ' € / ' + ctx.raw.y + ' качество';
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'Cost per hire (€)',
+                color: '#64748b',
+                font: { size: 11 }
+              },
+              ticks: { color: '#64748b', font: { size: 11 } },
+              grid: { color: '#e2e8f0' }
+            },
+            y: {
+              title: {
+                display: true,
+                text: 'Качество кандидатов (0–10)',
+                color: '#64748b',
+                font: { size: 11 }
+              },
+              ticks: { color: '#64748b', font: { size: 11 } },
+              grid: { color: '#e2e8f0' },
+              suggestedMin: 4,
+              suggestedMax: 10
+            }
+          }
+        }
+      });
+    }
+  })();
+</script>
+</body>
+</html>
