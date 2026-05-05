@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Гибкий график работы</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+:root{
+  --bg:#f5f7fb;
+  --accent:rgb(109,162,150);
+  --accent-soft:#e6efec;
+  --text:#2b2b2b;
+  --muted:#6b7280;
+  --card:#ffffff;
+}
+
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  color:var(--text);
+}
+
+/* SPLIT HEADER */
+.hero{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  min-height:260px;
+}
+
+.hero-left{
+  background:var(--accent);
+  color:#fff;
+  padding:40px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.hero-right{
+  background:#ffffff;
+  padding:40px;
+  display:flex;
+  align-items:center;
+}
+
+.hero h1{margin:0;font-size:32px;}
+.hero p{margin-top:10px;opacity:.9;}
+
+.meta span{
+  display:inline-block;
+  margin:6px 6px 0 0;
+  background:rgba(255,255,255,0.2);
+  padding:4px 10px;
+  border-radius:999px;
+  font-size:12px;
+}
+
+/* KPI STRIP */
+.kpi-strip{
+  display:flex;
+  gap:12px;
+  overflow-x:auto;
+  padding:20px;
+  margin-top:-40px;
+}
+
+.kpi{
+  min-width:180px;
+  background:#fff;
+  border-radius:14px;
+  padding:16px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.05);
+}
+
+.kpi h3{
+  margin:0;
+  color:var(--accent);
+}
+
+.kpi span{
+  font-size:12px;
+  color:var(--muted);
+}
+
+/* TIMELINE DAY */
+.day{
+  display:flex;
+  border-radius:12px;
+  overflow:hidden;
+  height:50px;
+}
+
+.day div{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+}
+
+.flex{flex:1;background:#cfe3de;}
+.core{flex:1;background:var(--accent);color:#fff;}
+
+/* PROCESS VERTICAL */
+.process{
+  position:relative;
+  padding-left:30px;
+}
+
+.process::before{
+  content:"";
+  position:absolute;
+  left:10px;
+  top:0;
+  bottom:0;
+  width:2px;
+  background:var(--accent-soft);
+}
+
+.step{
+  position:relative;
+  margin-bottom:20px;
+}
+
+.step::before{
+  content:"";
+  position:absolute;
+  left:-24px;
+  top:5px;
+  width:10px;
+  height:10px;
+  background:var(--accent);
+  border-radius:50%;
+}
+
+.step-title{
+  font-weight:600;
+}
+
+.card-block{
+  background:#fff;
+  border-radius:14px;
+  padding:20px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.05);
+}
+
+/* TABLE */
+.table td{
+  font-size:14px;
+}
+
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <h1>Гибкий график</h1>
+    <p>
+      Управляемый режим рабочего времени, позволяющий сотрудникам варьировать начало и окончание рабочего дня
+      при сохранении обязательных часов доступности.
+    </p>
+
+    <div class="meta">
+      <span>HR</span>
+      <span>Политики</span>
+      <span>Регламент</span>
+      <span>2026</span>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <canvas id="chart"></canvas>
+  </div>
+</div>
+
+<!-- KPI -->
+<div class="kpi-strip container">
+  <div class="kpi"><span>На гибком графике</span><h3>34%</h3></div>
+  <div class="kpi"><span>Согласования</span><h3>7</h3></div>
+  <div class="kpi"><span>Нарушения</span><h3>3</h3></div>
+  <div class="kpi"><span>Отклонение</span><h3>1.5ч</h3></div>
+</div>
+
+<div class="container py-4">
+
+<!-- DAY MODEL -->
+<div class="card-block mb-4">
+  <h5>Модель рабочего дня</h5>
+  <div class="day mt-3">
+    <div class="flex">Гибкое начало</div>
+    <div class="core">Обязательные часы</div>
+    <div class="flex">Гибкое завершение</div>
+  </div>
+</div>
+
+<div class="row g-4">
+
+<!-- PROCESS -->
+<div class="col-md-6">
+  <div class="card-block">
+    <h5>Процесс согласования</h5>
+
+    <div class="process mt-3">
+      <div class="step">
+        <div class="step-title">Запрос сотрудника</div>
+        <div class="text-muted small">Инициирование изменения графика</div>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Согласование руководителя</div>
+        <div class="text-muted small">Проверка влияния на команду</div>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Фиксация в системе</div>
+        <div class="text-muted small">Изменение параметров учета времени</div>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Применение</div>
+        <div class="text-muted small">Активация режима работы</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- RULES -->
+<div class="col-md-6">
+  <div class="card-block">
+    <h5>Правила применения гибкого графика</h5>
+
+    <table class="table mt-3">
+      <tr>
+        <td>Обязательное присутствие</td>
+        <td>11:00 – 16:00 (командное ядро)</td>
+      </tr>
+      <tr>
+        <td>Начало рабочего дня</td>
+        <td>с 08:00 до 11:00 по выбору сотрудника</td>
+      </tr>
+      <tr>
+        <td>Окончание рабочего дня</td>
+        <td>в зависимости от времени начала (8 часов)</td>
+      </tr>
+      <tr>
+        <td>Согласование</td>
+        <td>обязательно с руководителем</td>
+      </tr>
+      <tr>
+        <td>Ограничения</td>
+        <td>клиентские и операционные роли — по согласованию</td>
+      </tr>
+      <tr>
+        <td>Фиксация графика</td>
+        <td>через систему учета рабочего времени</td>
+      </tr>
+    </table>
+
+  </div>
+</div>
+
+</div>
+
+<!-- CRITERIA -->
+<div class="card-block mt-4">
+  <h5>Критерии доступа к гибкому графику</h5>
+
+  <table class="table mt-3">
+    <thead>
+      <tr>
+        <th>Критерий</th>
+        <th>Требование</th>
+        <th>Комментарий</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Стаж работы</td>
+        <td>≥ 3 месяца</td>
+        <td>Сотрудник прошёл адаптацию и знаком с процессами</td>
+      </tr>
+      <tr>
+        <td>Результаты работы</td>
+        <td>Не ниже ожидаемого уровня</td>
+        <td>Нет просроченных задач и системных нарушений сроков</td>
+      </tr>
+      <tr>
+        <td>Оценка руководителя</td>
+        <td>Положительное решение</td>
+        <td>Учитывается влияние на команду и процессы</td>
+      </tr>
+      <tr>
+        <td>Тип роли</td>
+        <td>Допускает гибкость</td>
+        <td>Исключение: роли с фиксированным присутствием</td>
+      </tr>
+      <tr>
+        <td>Дисциплина</td>
+        <td>Соблюдение договорённостей</td>
+        <td>Нарушения могут привести к отмене гибкого графика</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="mt-3" style="font-size:13px;color:#6b7280;">
+    Доступ предоставляется при выполнении всех критериев и может быть пересмотрен при ухудшении показателей.
+  </div>
+</div>
+
+</div>
+
+<script>
+new Chart(document.getElementById('chart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Гибкий график','Стандартный'],
+    datasets: [{
+      data: [34,66],
+      backgroundColor: ['#ff6b6b','#4dabf7']
+    }]
+  },
+  options:{
+    cutout:'65%',
+    plugins:{legend:{position:'bottom'}}
+  }
+});
+</script>
+
+</body>
+</html>
