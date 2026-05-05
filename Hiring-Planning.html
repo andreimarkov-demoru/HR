@@ -1,0 +1,1886 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Система планирования найма</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <!-- ECharts -->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --bg-elevated: #ffffff;
+      --border-subtle: #dde2ee;
+      --border-strong: #c3cadc;
+      --text-main: #1f2430;
+      --text-muted: #6b7280;
+      --accent: #2563eb;
+      --accent-soft: #e0edff;
+      --accent-strong: #1d4ed8;
+      --danger: #dc2626;
+      --warning: #f59e0b;
+      --success: #16a34a;
+      --info: #0ea5e9;
+      --critical: #b91c1c;
+      --high: #c2410c;
+      --medium: #2563eb;
+      --low: #6b7280;
+      --radius-lg: 12px;
+      --radius-md: 8px;
+      --radius-sm: 6px;
+      --shadow-soft: 0 10px 30px rgba(15, 23, 42, 0.06);
+      --shadow-subtle: 0 1px 3px rgba(15, 23, 42, 0.08);
+      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-sans);
+      color: var(--text-main);
+    }
+
+    .app-shell {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 16px 32px;
+      border-bottom: 1px solid var(--border-subtle);
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .brand-text-title {
+      font-weight: 600;
+      font-size: 18px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .brand-text-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .header-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      background: #f9fafb;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--success);
+    }
+
+    .layout-main {
+      flex: 1;
+      padding: 16px 24px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .layout-top {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) minmax(360px, 1.4fr);
+  gap: 16px;
+  align-items: stretch;
+}
+
+    .layout-bottom {
+      margin-top: 4px;
+      background: var(--bg-elevated);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-soft);
+      padding: 16px 18px 18px;
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-height: 260px;
+    }
+
+    .panel {
+      background: var(--bg-elevated);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-soft);
+      border: 1px solid var(--border-subtle);
+      padding: 14px 16px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+      overflow: hidden;
+      min-width: 0;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .panel-title {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .panel-title-badge {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: var(--accent-strong);
+      border: 1px solid #dbeafe;
+      white-space: nowrap;
+    }
+
+    .panel-subtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .panel-body {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .section-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      box-sizing: border-box;
+    }
+
+    .kpi-signal {
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+      padding: 8px 10px;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      column-gap: 8px;
+      row-gap: 2px;
+      align-items: center;
+      background: #f9fafb;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+
+    .kpi-signal-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      grid-column: 1 / 3;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .kpi-signal-value {
+      font-size: 14px;
+      font-weight: 600;
+      grid-column: 1 / 2;
+    }
+
+    .kpi-signal-trend {
+      font-size: 11px;
+      color: var(--text-muted);
+      grid-column: 2 / 3;
+      justify-self: flex-start;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .kpi-signal-indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      border: 2px solid #fff;
+      box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.6);
+      grid-column: 3 / 4;
+      justify-self: flex-end;
+    }
+
+    .kpi-critical {
+      background: #fef2f2;
+      border-color: #fecaca;
+    }
+
+    .kpi-critical .kpi-signal-indicator {
+      background: var(--danger);
+    }
+
+    .kpi-warning {
+      background: #fffbeb;
+      border-color: #fef3c7;
+    }
+
+    .kpi-warning .kpi-signal-indicator {
+      background: var(--warning);
+    }
+
+    .kpi-ok {
+      background: #ecfdf3;
+      border-color: #bbf7d0;
+    }
+
+    .kpi-ok .kpi-signal-indicator {
+      background: var(--success);
+    }
+
+    .kpi-info {
+      background: #e0f2fe;
+      border-color: #bae6fd;
+    }
+
+    .kpi-info .kpi-signal-indicator {
+      background: var(--info);
+    }
+
+    .signal-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .signal-tag {
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px dashed var(--border-subtle);
+      background: #f9fafb;
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .signal-tag-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    .decision-score-block {
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+      padding: 8px 10px;
+      background: #f9fafb;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .decision-score-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--text-muted);
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .decision-score-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--accent-strong);
+      white-space: nowrap;
+    }
+
+    .decision-score-bar {
+      position: relative;
+      height: 8px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      overflow: hidden;
+    }
+
+    .decision-score-bar-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #22c55e, #eab308, #ef4444);
+      width: 72%;
+    }
+
+    .decision-score-scale {
+      display: flex;
+      justify-content: space-between;
+      font-size: 9px;
+      color: var(--text-muted);
+      margin-top: 2px;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .decision-factors {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .decision-factor {
+      font-size: 10px;
+      padding: 4px 6px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-subtle);
+      background: #ffffff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .decision-factor-label {
+      color: var(--text-muted);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .decision-factor-score {
+      font-weight: 600;
+      font-size: 11px;
+      color: var(--text-main);
+      white-space: nowrap;
+    }
+
+    .decision-factor-chip {
+      font-size: 9px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: var(--accent-strong);
+      white-space: nowrap;
+    }
+
+    .center-pipeline {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .pipeline-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .pipeline-meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .pipeline-meta-pill {
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      background: #f9fafb;
+      white-space: nowrap;
+    }
+
+    .pipeline {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 8px;
+      position: relative;
+      padding-top: 10px;
+    }
+
+    .pipeline::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 22px;
+      height: 2px;
+      background: linear-gradient(90deg, #bfdbfe, #e5e7eb);
+      z-index: 0;
+    }
+
+    .pipeline-step {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      align-items: flex-start;
+      min-width: 0;
+    }
+
+    .pipeline-step-node {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      border: 2px solid #e5e7eb;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-muted);
+      box-shadow: var(--shadow-subtle);
+      flex-shrink: 0;
+    }
+
+    .pipeline-step.completed .pipeline-step-node {
+      border-color: #bbf7d0;
+      background: #ecfdf3;
+      color: var(--success);
+    }
+
+    .pipeline-step.active .pipeline-step-node {
+      border-color: #2563eb;
+      background: #eff6ff;
+      color: var(--accent-strong);
+      transform: scale(1.05);
+    }
+
+    .pipeline-step-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-main);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .pipeline-step-sub {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .pipeline-step-meta {
+      font-size: 10px;
+      color: var(--text-muted);
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .pipeline-step-chip {
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: #f9fafb;
+      border: 1px solid var(--border-subtle);
+      white-space: nowrap;
+    }
+
+    .pipeline-step-chip-critical {
+      background: #fef2f2;
+      border-color: #fecaca;
+      color: var(--danger);
+    }
+
+    .pipeline-step-chip-sla {
+      background: #eff6ff;
+      border-color: #dbeafe;
+      color: var(--accent-strong);
+    }
+
+    .pipeline-step-chip-trigger {
+      background: #ecfdf3;
+      border-color: #bbf7d0;
+      color: var(--success);
+    }
+
+    .pipeline-step-chip-limit {
+      background: #fffbeb;
+      border-color: #fef3c7;
+      color: var(--warning);
+    }
+
+    .pipeline-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .pipeline-footer-left {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .pipeline-footer-right {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .timeline-container {
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+      padding: 8px 10px;
+      background: #f9fafb;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .timeline-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--text-muted);
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .timeline-track {
+      position: relative;
+      margin-top: 4px;
+      padding-top: 10px;
+    }
+
+    .timeline-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 14px;
+      height: 2px;
+      background: linear-gradient(90deg, #22c55e, #eab308, #ef4444);
+    }
+
+    .timeline-steps {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 4px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .timeline-step {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      align-items: center;
+      font-size: 10px;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    .timeline-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      border: 2px solid #e5e7eb;
+      background: #fff;
+      flex-shrink: 0;
+    }
+
+    .timeline-dot.done {
+      border-color: #22c55e;
+      background: #dcfce7;
+    }
+
+    .timeline-dot.current {
+      border-color: #eab308;
+      background: #fef9c3;
+    }
+
+    .timeline-duration {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 2px;
+      text-align: right;
+    }
+
+    .priority-system {
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+      padding: 8px 10px;
+      background: #f9fafb;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .priority-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 6px;
+    }
+
+    .priority-block {
+      border-radius: var(--radius-md);
+      padding: 6px 6px 8px;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      position: relative;
+      overflow: hidden;
+      min-height: 60px;
+    }
+
+    .priority-block::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.25), transparent 55%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .priority-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      opacity: 0.9;
+    }
+
+    .priority-score {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .priority-meta {
+      font-size: 9px;
+      opacity: 0.9;
+    }
+
+    .priority-critical {
+      background: linear-gradient(135deg, #b91c1c, #ef4444);
+    }
+
+    .priority-high {
+      background: linear-gradient(135deg, #c2410c, #f97316);
+    }
+
+    .priority-normal {
+      background: linear-gradient(135deg, #2563eb, #38bdf8);
+    }
+
+    .priority-deferred {
+      background: linear-gradient(135deg, #6b7280, #9ca3af);
+    }
+
+    .priority-indicator {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.25);
+      backdrop-filter: blur(4px);
+      white-space: nowrap;
+    }
+
+    .priority-legend {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .priority-legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .priority-legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+    }
+
+    .priority-legend-dot.critical {
+      background: var(--critical);
+    }
+
+    .priority-legend-dot.high {
+      background: var(--high);
+    }
+
+    .priority-legend-dot.medium {
+      background: var(--medium);
+    }
+
+    .priority-legend-dot.low {
+      background: var(--low);
+    }
+
+    .financial-module {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 10px;
+      align-items: stretch;
+      min-width: 0;
+    }
+
+    .financial-chart-container {
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+      padding: 8px 10px;
+      background: #f9fafb;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-height: 160px;
+    }
+
+    .financial-chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--text-muted);
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .financial-chart-legend {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      font-size: 10px;
+    }
+
+    .financial-legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .financial-legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+    }
+
+    .financial-chart-wrapper {
+      position: relative;
+      width: 100%;
+      height: 120px;
+    }
+
+    .financial-chart-wrapper canvas {
+      position: absolute;
+      inset: 0;
+    }
+
+    .financial-metrics {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .financial-metric {
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+      padding: 6px 8px;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      font-size: 11px;
+    }
+
+    .financial-metric-label {
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .financial-metric-value {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .financial-metric-sub {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .financial-metric-tag {
+      font-size: 9px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: var(--accent-strong);
+      white-space: nowrap;
+    }
+
+    .raci-container {
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+      padding: 8px 10px;
+      background: #f9fafb;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .raci-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--text-muted);
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .raci-legend {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 10px;
+    }
+
+    .raci-legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .raci-legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+    }
+
+    .raci-grid {
+      display: grid;
+      grid-template-columns: 1.1fr repeat(4, minmax(0, 0.8fr));
+      gap: 4px;
+      align-items: stretch;
+      font-size: 10px;
+    }
+
+    .raci-header-cell {
+      padding: 4px 6px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .raci-header-cell:first-child {
+      text-align: left;
+    }
+
+    .raci-row-label {
+      padding: 4px 6px;
+      background: #f9fafb;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .raci-row-label span:first-child {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .raci-row-label-tag {
+      font-size: 9px;
+      padding: 1px 5px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: var(--accent-strong);
+      white-space: nowrap;
+    }
+
+    .raci-cell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 0;
+    }
+
+    .raci-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 600;
+      color: #fff;
+      box-shadow: var(--shadow-subtle);
+      flex-shrink: 0;
+    }
+
+    .raci-R {
+      background: #2563eb;
+    }
+
+    .raci-A {
+      background: #16a34a;
+    }
+
+    .raci-C {
+      background: #f59e0b;
+    }
+
+    .raci-I {
+      background: #6b7280;
+    }
+
+    .rules-block {
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+      padding: 8px 10px;
+      background: #f9fafb;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .rules-row {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 4px;
+      align-items: start;
+    }
+
+    .rules-label {
+      font-weight: 600;
+      color: var(--text-main);
+      font-size: 11px;
+    }
+
+    .rules-pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .rules-pill {
+      padding: 2px 6px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      background: #ffffff;
+      font-size: 10px;
+      white-space: nowrap;
+    }
+
+    .dependency-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      font-size: 11px;
+      color: var(--text-muted);
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .dependency-meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .dependency-meta-pill {
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      background: #f9fafb;
+      white-space: nowrap;
+    }
+
+    .dependency-graph {
+  width: 100%;
+  height: 420px;
+  min-height: 420px;
+  max-height: 420px;
+  overflow: hidden;
+}
+
+
+
+    .dependency-legend {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .dependency-legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .dependency-legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+    }
+
+    .footer-strip {
+      padding: 6px 24px 10px;
+      font-size: 10px;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--border-subtle);
+      background: #f9fafb;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .footer-strip span strong {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    @media (max-width: 1420px) {
+      .layout-top {
+    grid-template-columns: 1fr;
+  }
+
+      .layout-left {
+        grid-area: left;
+      }
+
+      .layout-center {
+        grid-area: center;
+      }
+
+      .layout-right {
+        grid-area: right;
+      }
+    }
+
+    @media (max-width: 900px) {
+      header {
+        padding: 12px 16px;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .layout-main {
+        padding: 12px 12px 16px;
+      }
+
+      .layout-top {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas:
+          "left"
+          "center"
+          "right";
+      }
+
+      .financial-module {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .priority-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .pipeline {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .timeline-steps {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 600px) {
+      .kpi-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .decision-factors {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .raci-grid {
+        grid-template-columns: 1.1fr repeat(4, minmax(0, 0.7fr));
+      }
+
+      .rules-row {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header>
+      <div class="brand">
+        <div class="brand-text">
+          <div class="brand-text-title">HR01 — Планирование найма</div>
+          <div class="brand-text-sub">Система планирования найма · HR · Руководители · Финансы</div>
+        </div>
+      </div>
+      <div class="header-meta">
+        <div class="pill">
+          <span class="pill-dot"></span>
+          <span>Окно планирования: Q3 · Статус: активен</span>
+        </div>
+        <div class="pill">
+          <span>Версия регламента</span>
+          <strong>v2.4</strong>
+        </div>
+      </div>
+    </header>
+
+    <main class="layout-main">
+      <section class="layout-top">
+        <!-- LEFT: System signals & decision scoring -->
+        <div class="layout-left panel">
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">
+                Сигналы системы
+                <span class="panel-title-badge">ЛЕВАЯ ЗОНА · Нагрузка · Риск · Бюджет · KPI</span>
+              </div>
+              <div class="panel-subtitle">Агрегированные индикаторы для запуска процесса планирования найма</div>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="section-label">KPI / SLA индикаторы</div>
+            <div class="kpi-grid">
+              <div class="kpi-signal kpi-critical">
+                <div class="kpi-signal-label">Нагрузка команды</div>
+                <div class="kpi-signal-value">132%</div>
+                <div class="kpi-signal-trend">+18% к плану</div>
+                <div class="kpi-signal-indicator"></div>
+              </div>
+              <div class="kpi-signal kpi-warning">
+                <div class="kpi-signal-label">SLA по инцидентам</div>
+                <div class="kpi-signal-value">87%</div>
+                <div class="kpi-signal-trend">ниже целевого 95%</div>
+                <div class="kpi-signal-indicator"></div>
+              </div>
+              <div class="kpi-signal kpi-ok">
+                <div class="kpi-signal-label">ФОТ vs бюджет</div>
+                <div class="kpi-signal-value">91%</div>
+                <div class="kpi-signal-trend">в пределах лимита</div>
+                <div class="kpi-signal-indicator"></div>
+              </div>
+              <div class="kpi-signal kpi-info">
+                <div class="kpi-signal-label">Текучесть за 12 мес.</div>
+                <div class="kpi-signal-value">7,4%</div>
+                <div class="kpi-signal-trend">стабильно</div>
+                <div class="kpi-signal-indicator"></div>
+              </div>
+            </div>
+
+            <div class="signal-tags">
+              <div class="signal-tag">
+                <span class="signal-tag-dot"></span>
+                <span>Триггер: перегрузка &gt; 120%</span>
+              </div>
+              <div class="signal-tag">
+                <span class="signal-tag-dot" style="background: var(--warning);"></span>
+                <span>Ограничение: ФОТ &lt; 95% бюджета</span>
+              </div>
+              <div class="signal-tag">
+                <span class="signal-tag-dot" style="background: var(--success);"></span>
+                <span>Результат: решение о найме / альтернативе</span>
+              </div>
+            </div>
+
+            <div class="section-label">Оценка необходимости найма</div>
+            <div class="decision-score-block">
+              <div class="decision-score-header">
+                <span>Индекс необходимости найма (нагрузка · KPI · SLA · альтернатива)</span>
+                <span class="decision-score-value">7,2 / 10</span>
+              </div>
+              <div class="decision-score-bar">
+                <div class="decision-score-bar-fill"></div>
+              </div>
+              <div class="decision-score-scale">
+                <span>0 — нет необходимости</span>
+                <span>5 — требуется обсуждение</span>
+                <span>10 — критический найм</span>
+              </div>
+              <div class="decision-factors">
+                <div class="decision-factor">
+                  <span class="decision-factor-label">Нагрузка (FTE)</span>
+                  <span class="decision-factor-score">3,0</span>
+                </div>
+                <div class="decision-factor">
+                  <span class="decision-factor-label">KPI / SLA</span>
+                  <span class="decision-factor-score">2,1</span>
+                </div>
+                <div class="decision-factor">
+                  <span class="decision-factor-label">Риск для бизнеса</span>
+                  <span class="decision-factor-score">1,4</span>
+                </div>
+                <div class="decision-factor">
+                  <span class="decision-factor-label">Альтернатива найму</span>
+                  <span class="decision-factor-chip">возможна</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CENTER: Main decision pipeline & financials / timing -->
+        <div class="layout-center panel">
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">
+                Процесс принятия решения
+                <span class="panel-title-badge">ЦЕНТР · Поток решения · Тайминг · Бюджет</span>
+              </div>
+              <div class="panel-subtitle">От триггера до утверждённого решения о найме и запуска подбора</div>
+            </div>
+          </div>
+          <div class="panel-body center-pipeline">
+            <div class="pipeline-header-row">
+              <div class="section-label">Поток решения · Шаги процесса</div>
+              <div class="pipeline-meta">
+                <span class="pipeline-meta-pill">Назначение: управляемый найм</span>
+                <span class="pipeline-meta-pill">Результат: план / отказ / альтернатива</span>
+              </div>
+            </div>
+
+            <div class="pipeline">
+              <div class="pipeline-step completed">
+                <div class="pipeline-step-node">1</div>
+                <div class="pipeline-step-label">Триггер найма</div>
+                <div class="pipeline-step-sub">перегрузка, рост, замещение</div>
+                <div class="pipeline-step-meta">
+                  <span class="pipeline-step-chip pipeline-step-chip-trigger">Авто-сигнал системы</span>
+                </div>
+              </div>
+              <div class="pipeline-step completed">
+                <div class="pipeline-step-node">2</div>
+                <div class="pipeline-step-label">Оценка необходимости</div>
+                <div class="pipeline-step-sub">нагрузка · KPI · SLA · альтернатива</div>
+                <div class="pipeline-step-meta">
+                  <span class="pipeline-step-chip pipeline-step-chip-sla">Индекс ≥ 6</span>
+                </div>
+              </div>
+              <div class="pipeline-step active">
+                <div class="pipeline-step-node">3</div>
+                <div class="pipeline-step-label">Бюджетирование</div>
+                <div class="pipeline-step-sub">ФОТ · накладные · стоимость найма</div>
+                <div class="pipeline-step-meta">
+                  <span class="pipeline-step-chip pipeline-step-chip-limit">Лимит ФОТ</span>
+                  <span class="pipeline-step-chip">Окупаемость ≤ 12 мес.</span>
+                </div>
+              </div>
+              <div class="pipeline-step">
+                <div class="pipeline-step-node">4</div>
+                <div class="pipeline-step-label">Приоритизация</div>
+                <div class="pipeline-step-sub">критичность · риск</div>
+                <div class="pipeline-step-meta">
+                  <span class="pipeline-step-chip">P1 / P2 / P3 / P4</span>
+                </div>
+              </div>
+              <div class="pipeline-step">
+                <div class="pipeline-step-node">5</div>
+                <div class="pipeline-step-label">Утверждение</div>
+                <div class="pipeline-step-sub">руководитель · HRBP · финансы</div>
+                <div class="pipeline-step-meta">
+                  <span class="pipeline-step-chip">RACI: A / R / C</span>
+                </div>
+              </div>
+              <div class="pipeline-step">
+                <div class="pipeline-step-node">6</div>
+                <div class="pipeline-step-label">Запуск найма</div>
+                <div class="pipeline-step-sub">рекрутер · контроль time-to-hire</div>
+                <div class="pipeline-step-meta">
+                  <span class="pipeline-step-chip pipeline-step-chip-critical">Контроль TTH</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="pipeline-footer">
+              <div class="pipeline-footer-left">
+                <span>Ограничения: бюджет, headcount, регламент</span>
+                <span>Решение: утвердить / отложить / заменить альтернативой</span>
+              </div>
+              <div class="pipeline-footer-right">
+                <span>Текущий этап:</span>
+                <span class="pipeline-meta-pill">Бюджетирование вакансии</span>
+              </div>
+            </div>
+
+            <div class="section-label">Тайминг найма · Жизненный цикл</div>
+            <div class="timeline-container">
+              <div class="timeline-header">
+                <span>Цепочка: от запроса до выхода сотрудника</span>
+                <span>Целевой time-to-hire: 55 дней</span>
+              </div>
+              <div class="timeline-track">
+                <div class="timeline-line"></div>
+                <div class="timeline-steps">
+                  <div class="timeline-step">
+                    <div class="timeline-dot done"></div>
+                    <div>Запрос</div>
+                    <div>2 дня</div>
+                  </div>
+                  <div class="timeline-step">
+                    <div class="timeline-dot done"></div>
+                    <div>Утверждение</div>
+                    <div>5 дней</div>
+                  </div>
+                  <div class="timeline-step">
+                    <div class="timeline-dot current"></div>
+                    <div>Поиск</div>
+                    <div>25 дней</div>
+                  </div>
+                  <div class="timeline-step">
+                    <div class="timeline-dot"></div>
+                    <div>Оффер</div>
+                    <div>8 дней</div>
+                  </div>
+                  <div class="timeline-step">
+                    <div class="timeline-dot"></div>
+                    <div>Выход</div>
+                    <div>15 дней</div>
+                  </div>
+                </div>
+              </div>
+              <div class="timeline-duration">
+                Прогноз: 55–60 дней · контрольные точки: бюджет, оффер, дата выхода
+              </div>
+            </div>
+
+            <div class="section-label">Бюджетирование вакансии · Структура стоимости</div>
+            <div class="financial-module">
+              <div class="financial-chart-container">
+                <div class="financial-chart-header">
+                  <span>Структура стоимости одной вакансии</span>
+                  <div class="financial-chart-legend">
+                    <span class="financial-legend-item">
+                      <span class="financial-legend-dot" style="background:#2563eb;"></span>ФОТ
+                    </span>
+                    <span class="financial-legend-item">
+                      <span class="financial-legend-dot" style="background:#f97316;"></span>Накладные
+                    </span>
+                    <span class="financial-legend-item">
+                      <span class="financial-legend-dot" style="background:#22c55e;"></span>Стоимость найма
+                    </span>
+                  </div>
+                </div>
+                <div class="financial-chart-wrapper">
+                  <canvas id="financialChart"></canvas>
+                </div>
+              </div>
+              <div class="financial-metrics">
+                <div class="financial-metric">
+                  <div class="financial-metric-label">
+                    <span>ФОТ (годовой)</span>
+                    <span class="financial-metric-tag">70% от общей стоимости</span>
+                  </div>
+                  <div class="financial-metric-value">€72 000</div>
+                  <div class="financial-metric-sub">включая бонусы и премии</div>
+                </div>
+                <div class="financial-metric">
+                  <div class="financial-metric-label">
+                    <span>Накладные расходы</span>
+                    <span class="financial-metric-tag" style="background:#fff7ed;color:#c2410c;">20% от ФОТ</span>
+                  </div>
+                  <div class="financial-metric-value">€14 400</div>
+                  <div class="financial-metric-sub">оборудование, лицензии, рабочее место</div>
+                </div>
+                <div class="financial-metric">
+                  <div class="financial-metric-label">
+                    <span>Стоимость найма (CAC)</span>
+                    <span class="financial-metric-tag" style="background:#ecfdf3;color:#15803d;">окупаемость &lt; 12 мес.</span>
+                  </div>
+                  <div class="financial-metric-value">€6 800</div>
+                  <div class="financial-metric-sub">рекрутинг, реклама, оценка, онбординг</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="layout-bottom">
+        <!-- RIGHT: Rules, RACI, governance -->
+        <div class="layout-right panel">
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">
+                Управление процессом · Роли и регламент
+                <span class="panel-title-badge">ПРАВАЯ ЗОНА · RACI · Правила</span>
+              </div>
+              <div class="panel-subtitle">Роли, ответственность и ограничения процесса планирования найма</div>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="section-label">Роли и ответственность · Матрица RACI</div>
+            <div class="raci-container">
+              <div class="raci-header">
+                <span>Ключевые участники: Руководитель · HRBP · Финансы · Рекрутер</span>
+                <div class="raci-legend">
+                  <span class="raci-legend-item">
+                    <span class="raci-legend-dot" style="background:#2563eb;"></span>R — Исполнитель (Responsible)
+                  </span>
+                  <span class="raci-legend-item">
+                    <span class="raci-legend-dot" style="background:#16a34a;"></span>A — Ответственный (Accountable)
+                  </span>
+                  <span class="raci-legend-item">
+                    <span class="raci-legend-dot" style="background:#f59e0b;"></span>C — Консультируемый (Consulted)
+                  </span>
+                  <span class="raci-legend-item">
+                    <span class="raci-legend-dot" style="background:#6b7280;"></span>I — Информируемый (Informed)
+                  </span>
+                </div>
+              </div>
+              <div class="raci-grid">
+                <div class="raci-header-cell"></div>
+                <div class="raci-header-cell">Руководитель</div>
+                <div class="raci-header-cell">HRBP</div>
+                <div class="raci-header-cell">Финансы</div>
+                <div class="raci-header-cell">Рекрутер</div>
+
+                <div class="raci-row-label">
+                  <span>Инициация запроса</span>
+                  <span class="raci-row-label-tag">Триггер</span>
+                </div>
+                <div class="raci-cell"><div class="raci-dot raci-R">R</div></div>
+                <div class="raci-cell"><div class="raci-dot raci-C">C</div></div>
+                <div class="raci-cell"><div class="raci-dot raci-I">I</div></div>
+                <div class="raci-cell"><div class="raci-dot raci-I">I</div></div>
+
+                <div class="raci-row-label">
+                  <span>Оценка необходимости</span>
+                  <span class="raci-row-label-tag">Нагрузка · KPI</span>
+                </div>
+                <div class="raci-cell"><div class="raci-dot raci-R">R</div></div>
+                <div class="raci-cell"><div class="raci-dot raci-R">R</div></div>
+                <div class="raci-cell"><div class="raci-dot raci-C">C</div></div>
+                <div class="raci-cell"><div class="raci-dot raci-I">I</div></div>
+
+                <div class="raci-row-label">
+                  <span>Бюджетирование</span>
+                  <span class="raci-row-label-tag">ФОТ · лимиты</span>
+                </div>
+                <div class="raci-cell"><div class="raci-dot raci-C">C</div></div>
+                <div class="raci-cell"><div class="raci-dot raci-C">C</div></div>
+                <div class="raci-cell"><div class="raci-dot raci-A">A</div></div>
+                <div class="raci-cell"><div class="raci-dot raci-I">I</div></div>
+
+                <div class="raci-row-label">
+                  <span>Приоритизация</span>
+                  <span class="raci-row-label-tag">Критичность</span>
+                </div>
+                <div class="raci-cell"><div class="raci-dot raci-A">A</div></div>
+                <div class="raci-cell"><div class="raci-dot raci-R">R</div></div>
+                <div class="raci-cell"><div class="raci-dot raci-C">C</div></div>
+                <div class="raci-cell"><div class="raci-dot raci-I">I</div></div>
+
+                <div class="raci-row-label">
+                  <span>Запуск найма</span>
+                  <span class="raci-row-label-tag">Воронка</span>
+                </div>
+                <div class="raci-cell"><div class="raci-dot raci-I">I</div></div>
+                <div class="raci-cell"><div class="raci-dot raci-C">C</div></div>
+                <div class="raci-cell"><div class="raci-dot raci-I">I</div></div>
+                <div class="raci-cell"><div class="raci-dot raci-R">R</div></div>
+              </div>
+            </div>
+
+            <div class="section-label">Приоритизация вакансий</div>
+            <div class="priority-system">
+              <div class="priority-grid">
+                <div class="priority-block priority-critical">
+                  <div class="priority-indicator">P1 · Критическая</div>
+                  <div class="priority-label">Критическая</div>
+                  <div class="priority-score">P1</div>
+                  <div class="priority-meta">Риск остановки бизнеса · SLA &lt; 80%</div>
+                </div>
+                <div class="priority-block priority-high">
+                  <div class="priority-indicator">P2 · Высокая</div>
+                  <div class="priority-label">Высокая</div>
+                  <div class="priority-score">P2</div>
+                  <div class="priority-meta">Рост выручки · запуск новых продуктов</div>
+                </div>
+                <div class="priority-block priority-normal">
+                  <div class="priority-indicator">P3 · Обычная</div>
+                  <div class="priority-label">Обычная</div>
+                  <div class="priority-score">P3</div>
+                  <div class="priority-meta">Плановый найм · замещение</div>
+                </div>
+                <div class="priority-block priority-deferred">
+                  <div class="priority-indicator">P4 · Отложенная</div>
+                  <div class="priority-label">Отложенная</div>
+                  <div class="priority-score">P4</div>
+                  <div class="priority-meta">Низкий эффект · бюджетные ограничения</div>
+                </div>
+              </div>
+              <div class="priority-legend">
+                <span class="priority-legend-item">
+                  <span class="priority-legend-dot critical"></span> P1 — запуск немедленно
+                </span>
+                <span class="priority-legend-item">
+                  <span class="priority-legend-dot high"></span> P2 — в текущем квартале
+                </span>
+                <span class="priority-legend-item">
+                  <span class="priority-legend-dot medium"></span> P3 — при наличии ресурса
+                </span>
+                <span class="priority-legend-item">
+                  <span class="priority-legend-dot low"></span> P4 — пересмотр в следующем цикле
+                </span>
+              </div>
+            </div>
+
+            <div class="section-label">Регламент процесса</div>
+            <div class="rules-block">
+              <div class="rules-row">
+                <div class="rules-label">Назначение процесса</div>
+                <div>Обеспечить управляемый, бюджетно-ограниченный и приоритизированный найм в связке с целями бизнеса.</div>
+              </div>
+              <div class="rules-row">
+                <div class="rules-label">Триггеры найма</div>
+                <div class="rules-pill-row">
+                  <span class="rules-pill">Перегрузка команды &gt; 120%</span>
+                  <span class="rules-pill">Запуск нового продукта</span>
+                  <span class="rules-pill">Замещение критической роли</span>
+                  <span class="rules-pill">Регуляторные требования</span>
+                </div>
+              </div>
+              <div class="rules-row">
+                <div class="rules-label">Ограничения</div>
+                <div class="rules-pill-row">
+                  <span class="rules-pill">ФОТ в пределах бюджета</span>
+                  <span class="rules-pill">Headcount по оргструктуре</span>
+                  <span class="rules-pill">Регламент time-to-hire</span>
+                  <span class="rules-pill">Согласование с финансами</span>
+                </div>
+              </div>
+              <div class="rules-row">
+                <div class="rules-label">Результат процесса</div>
+                <div>Утверждённый план найма по приоритетам и бюджету или решение об альтернативе найму.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BOTTOM: Dependency graph -->
+      <section class="layout-bottom">
+
+        <div class="dependency-header">
+          <div>
+            <div class="panel-title">
+              Связь с другими HR-процессами
+              <span class="panel-title-badge">НИЖНЯЯ ЗОНА · Граф зависимостей (ECharts)</span>
+            </div>
+            <div class="panel-subtitle">Связь планирования найма с оценкой, кадровым резервом, обучением и HR-аналитикой</div>
+          </div>
+          <div class="dependency-meta">
+            <span class="dependency-meta-pill">Источник данных: HR-аналитика</span>
+            <span class="dependency-meta-pill">Обновление: ежедневно</span>
+          </div>
+        </div>
+        <div class="dependency-graph" id="dependencyGraph"></div>
+        <div class="dependency-legend">
+          <span class="dependency-legend-item">
+            <span class="dependency-legend-dot" style="background:#2563eb;"></span>Планирование найма
+          </span>
+          <span class="dependency-legend-item">
+            <span class="dependency-legend-dot" style="background:#22c55e;"></span>Оценка персонала
+          </span>
+          <span class="dependency-legend-item">
+            <span class="dependency-legend-dot" style="background:#f97316;"></span>Кадровый резерв
+          </span>
+          <span class="dependency-legend-item">
+            <span class="dependency-legend-dot" style="background:#0ea5e9;"></span>Обучение
+          </span>
+          <span class="dependency-legend-item">
+            <span class="dependency-legend-dot" style="background:#6b7280;"></span>HR-аналитика
+          </span>
+        </div>
+      </section>
+    </main>
+
+    <div class="footer-strip">
+      <span><strong>HR01 · Система планирования найма</strong> — операционный модуль принятия решений о найме</span>
+      <span>Роли: Руководитель · HRBP · Финансы · Рекрутер</span>
+    </div>
+  </div>
+
+  <script>
+    // Financial breakdown chart (Chart.js)
+    (function () {
+      const ctx = document.getElementById('financialChart');
+      if (!ctx) return;
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Вакансия'],
+          datasets: [
+            {
+              label: 'ФОТ',
+              data: [72000],
+              backgroundColor: '#2563eb',
+              stack: 'total'
+            },
+            {
+              label: 'Накладные',
+              data: [14400],
+              backgroundColor: '#f97316',
+              stack: 'total'
+            },
+            {
+              label: 'Стоимость найма',
+              data: [6800],
+              backgroundColor: '#22c55e',
+              stack: 'total'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            },
+            tooltip: {
+              callbacks: {
+                label: function (ctx) {
+                  const value = ctx.parsed.y || 0;
+                  return ctx.dataset.label + ': €' + value.toLocaleString('de-DE');
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              stacked: true,
+              grid: {
+                display: false
+              },
+              ticks: {
+                font: {
+                  size: 10
+                }
+              }
+            },
+            y: {
+              stacked: true,
+              ticks: {
+                callback: function (value) {
+                  return '€' + value / 1000 + 'k';
+                },
+                font: {
+                  size: 10
+                }
+              },
+              grid: {
+                color: '#e5e7eb'
+              }
+            }
+          }
+        }
+      });
+    })();
+
+    // Dependency graph (ECharts)
+// Dependency graph (ECharts)
+(function () {
+  const el = document.getElementById('dependencyGraph');
+  if (!el) return;
+
+  const isNarrow = window.innerWidth < 1420;
+  const scale = isNarrow ? 0.65 : 1;
+
+  const chart = echarts.init(el);
+
+  const nodes = [
+    { id: 'hiring', name: 'Планирование найма', category: 0, symbolSize: 110 * scale },
+    { id: 'performance', name: 'Оценка персонала', category: 1, symbolSize: 80 * scale },
+    { id: 'talent', name: 'Кадровый резерв', category: 2, symbolSize: 80 * scale },
+    { id: 'learning', name: 'Обучение', category: 3, symbolSize: 70 * scale },
+    { id: 'analytics', name: 'HR-аналитика', category: 4, symbolSize: 70 * scale }
+  ];
+
+  const links = [
+    { source: 'performance', target: 'hiring', value: 'данные о потенциале и результативности' },
+    { source: 'talent', target: 'hiring', value: 'резерв на ключевые роли' },
+    { source: 'learning', target: 'hiring', value: 'альтернатива найму через развитие' },
+    { source: 'analytics', target: 'hiring', value: 'прогноз нагрузки и текучести' },
+    { source: 'analytics', target: 'performance', value: 'KPI / SLA' },
+    { source: 'analytics', target: 'talent', value: 'риск ухода' },
+    { source: 'learning', target: 'performance', value: 'gap компетенций' }
+  ];
+
+  const categories = [
+    { name: 'Планирование найма', itemStyle: { color: '#2563eb' } },
+    { name: 'Оценка персонала', itemStyle: { color: '#22c55e' } },
+    { name: 'Кадровый резерв', itemStyle: { color: '#f97316' } },
+    { name: 'Обучение', itemStyle: { color: '#0ea5e9' } },
+    { name: 'HR-аналитика', itemStyle: { color: '#6b7280' } }
+  ];
+
+  const option = {
+    tooltip: {
+      formatter: function (params) {
+        if (params.dataType === 'edge') {
+          return params.data.source + ' → ' + params.data.target + '<br/>' + params.data.value;
+        }
+        return params.data.name;
+      }
+    },
+    animationDuration: 800,
+    animationEasing: 'quadraticOut',
+
+    series: [
+      {
+        type: 'graph',
+        layout: 'force',
+        roam: true,
+        draggable: true,
+        focusNodeAdjacency: true,
+
+        // 🔥 ВАЖНО: центрируем граф
+        center: ['50%', '50%'],
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+
+        categories: categories,
+        data: nodes,
+        links: links,
+
+        label: {
+          show: true,
+          position: 'inside',
+          formatter: '{b}',
+          fontSize: 10,
+          color: '#ffffff'
+        },
+
+        // 🔥 Адаптивная физика графа
+        force: {
+          repulsion: isNarrow ? 90 : 180,
+          edgeLength: isNarrow ? [40, 90] : [80, 160],
+          gravity: isNarrow ? 0.25 : 0.1
+        },
+
+        lineStyle: {
+          color: '#cbd5f5',
+          width: 1.2,
+          curveness: 0.2
+        },
+
+        edgeLabel: {
+          show: false
+        }
+      }
+    ]
+  };
+
+  chart.setOption(option);
+  window.addEventListener('resize', () => chart.resize());
+})();
+
+
+  </script>
+</body>
+</html>
