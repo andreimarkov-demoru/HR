@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>HR · Отбор кандидатов · Оценка кандидатов</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --bg-card: #ffffff;
+      --border: #e2e8f0;
+      --border-strong: #cbd5e1;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --accent: #2563eb;
+      --accent-soft: #dbeafe;
+      --green: #16a34a;
+      --green-soft: #dcfce7;
+      --red: #dc2626;
+      --red-soft: #fee2e2;
+      --yellow: #f59e0b;
+      --yellow-soft: #fef3c7;
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-pill: 999px;
+      --shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+      --font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text-main);
+      line-height: 1.55;
+    }
+
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    @media (min-width: 1200px) {
+      .page {
+        padding: 28px 0 48px;
+      }
+    }
+
+    /* HEADER */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .header-title {
+      font-size: 24px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .header-sub {
+      font-size: 15px;
+      color: var(--text-muted);
+    }
+
+    .header-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .pill {
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border);
+      background: #ffffff;
+      font-size: 14px;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    /* TOP SCORE BLOCK */
+    .top-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 18px;
+    }
+
+    @media (max-width: 900px) {
+      .top-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .score-card {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 20px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-columns: 120px minmax(0, 1fr);
+      gap: 16px;
+      align-items: center;
+    }
+
+    @media (max-width: 600px) {
+      .score-card {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .score-main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .score-label {
+      font-size: 14px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+    }
+
+    .score-value {
+      font-size: 40px;
+      font-weight: 800;
+      color: var(--accent);
+    }
+
+    .score-badge {
+      font-size: 14px;
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      background: var(--green-soft);
+      color: var(--green);
+      border: 1px solid var(--green);
+      text-align: center;
+    }
+
+    .score-details-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .score-details-sub {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .score-details-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      font-size: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .score-details-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .score-details-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .score-details-label {
+      color: var(--text-muted);
+    }
+
+    .score-details-value {
+      font-weight: 600;
+    }
+
+    .meta-card {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 16px 18px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      font-size: 14px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .meta-title {
+      font-size: 16px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .meta-label {
+      color: var(--text-muted);
+    }
+
+    .meta-value {
+      font-weight: 600;
+    }
+
+    /* CRITERIA */
+    .criteria-section {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 18px 20px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      display: grid;
+      gap: 14px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .criteria-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    @media (max-width: 1000px) {
+      .criteria-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 600px) {
+      .criteria-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .criteria-card {
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: #f8fafc;
+      padding: 12px 12px 14px;
+      display: grid;
+      gap: 6px;
+      font-size: 14px;
+    }
+
+    .criteria-name {
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 16px;
+    }
+
+    .criteria-name::before {
+      content: "🔹";
+      font-size: 16px;
+    }
+
+    .criteria-weight {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .criteria-scale {
+      font-size: 14px;
+    }
+
+    .criteria-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* SCORE BREAKDOWN */
+    .breakdown-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .breakdown-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+    .breakdown-card {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 18px 20px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      display: grid;
+      gap: 10px;
+    }
+
+    .breakdown-title {
+      font-size: 16px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .breakdown-row {
+      display: grid;
+      grid-template-columns: 120px minmax(0, 1fr) 60px;
+      gap: 8px;
+      align-items: center;
+      font-size: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .breakdown-row {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .breakdown-label {
+      font-weight: 500;
+    }
+
+    .breakdown-bar {
+      width: 100%;
+      height: 10px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .breakdown-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    .breakdown-score {
+      text-align: right;
+      font-weight: 600;
+    }
+
+    .breakdown-note {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    /* COMPARISON */
+    .comparison-card {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 18px 20px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      display: grid;
+      gap: 10px;
+    }
+
+    .comparison-title {
+      font-size: 16px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .comparison-table th,
+    .comparison-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+
+    .comparison-table th {
+      font-size: 14px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      background: #f8fafc;
+    }
+
+    .comparison-best {
+      background: var(--green-soft);
+    }
+
+    .comparison-worst {
+      background: var(--red-soft);
+    }
+
+    .badge-small {
+      font-size: 14px;
+      padding: 2px 8px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-strong);
+      background: #ffffff;
+      white-space: nowrap;
+    }
+
+    .badge-small.green {
+      border-color: var(--green);
+      color: var(--green);
+      background: var(--green-soft);
+    }
+
+    .badge-small.red {
+      border-color: var(--red);
+      color: var(--red);
+      background: var(--red-soft);
+    }
+
+    /* DECISION RULES & BIAS */
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 900px) {
+      .bottom-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .rules-card,
+    .bias-card {
+      background: var(--bg-card);
+      border-radius: 18px;
+      padding: 16px 18px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      font-size: 16px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .rules-title,
+    .bias-title {
+      font-size: 16px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .rules-item::before {
+      content: "• ";
+      color: var(--accent);
+    }
+
+    .bias-item::before {
+      content: "• ";
+      color: var(--yellow);
+    }
+  </style>
+</head>
+
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-left">
+      <div class="header-title">Отбор кандидатов</div>
+      <div class="header-sub">Оценка кандидатов (scoring model)</div>
+    </div>
+    <div class="header-meta">
+      <div class="pill">Формализованная система оценки</div>
+      <div class="pill">Снижение субъективности</div>
+    </div>
+  </header>
+
+  <!-- TOP SCORE -->
+  <section class="top-grid">
+    <article class="score-card">
+      <div class="score-main">
+        <div class="score-label">Общий балл кандидата</div>
+        <div class="score-value">8.4</div>
+        <div class="score-badge">Рекомендуется к офферу</div>
+      </div>
+      <div>
+        <div class="score-details-title">Профиль оценки</div>
+        <div class="score-details-sub">
+          Балл рассчитывается по формуле с весами критериев: навыки, опыт, культура, потенциал.
+        </div>
+        <div class="score-details-grid">
+          <div class="score-details-item">
+            <span class="score-details-label">Навыки</span>
+            <span class="score-details-value">8.8 / 10</span>
+          </div>
+          <div class="score-details-item">
+            <span class="score-details-label">Опыт</span>
+            <span class="score-details-value">8.0 / 10</span>
+          </div>
+          <div class="score-details-item">
+            <span class="score-details-label">Культура</span>
+            <span class="score-details-value">8.5 / 10</span>
+          </div>
+          <div class="score-details-item">
+            <span class="score-details-label">Потенциал</span>
+            <span class="score-details-value">8.2 / 10</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="meta-card">
+      <div class="meta-title">Модель оценки</div>
+      <div class="meta-row">
+        <span class="meta-label">Тип модели</span>
+        <span class="meta-value">взвешенный суммарный балл (0–10)</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-label">Цель</span>
+        <span class="meta-value">сравнимость кандидатов и прозрачность решений</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-label">Использование</span>
+        <span class="meta-value">все этапы интервью фиксируют баллы по критериям</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-label">Обновление модели</span>
+        <span class="meta-value">раз в 6–12 месяцев на основе данных найма</span>
+      </div>
+    </article>
+  </section>
+
+  <!-- CRITERIA -->
+  <section class="criteria-section">
+    <div class="section-title">Критерии оценки</div>
+    <div class="criteria-grid">
+      <div class="criteria-card">
+        <div class="criteria-name">Навыки</div>
+        <div class="criteria-weight">Вес: 40%</div>
+        <div class="criteria-scale">Шкала: 1–10 (техническая и профессиональная экспертиза)</div>
+        <div class="criteria-desc">
+          Оцениваются ключевые hard skills, релевантность стеку, глубина знаний, способность решать практические задачи.
+        </div>
+      </div>
+      <div class="criteria-card">
+        <div class="criteria-name">Опыт</div>
+        <div class="criteria-weight">Вес: 25%</div>
+        <div class="criteria-scale">Шкала: 1–10 (глубина и релевантность опыта)</div>
+        <div class="criteria-desc">
+          Учитываются годы опыта, доменная экспертиза, масштаб проектов, роль кандидата и достигнутые результаты.
+        </div>
+      </div>
+      <div class="criteria-card">
+        <div class="criteria-name">Культура</div>
+        <div class="criteria-weight">Вес: 20%</div>
+        <div class="criteria-scale">Шкала: 1–10 (соответствие ценностям и стилю работы)</div>
+        <div class="criteria-desc">
+          Оценивается соответствие ценностям компании, стиль взаимодействия, командность, отношение к обратной связи.
+        </div>
+      </div>
+      <div class="criteria-card">
+        <div class="criteria-name">Потенциал</div>
+        <div class="criteria-weight">Вес: 15%</div>
+        <div class="criteria-scale">Шкала: 1–10 (рост и обучаемость)</div>
+        <div class="criteria-desc">
+          Оценивается способность быстро учиться, брать ответственность, масштабироваться до следующего уровня роли.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BREAKDOWN + COMPARISON -->
+<section class="breakdown-grid">
+  <article class="breakdown-card">
+    <div class="breakdown-title">Score breakdown по критериям</div>
+
+    <div class="breakdown-row">
+      <div class="breakdown-label">Навыки</div>
+      <div class="breakdown-bar">
+        <div class="breakdown-fill" style="width: 88%;"></div>
+      </div>
+      <div class="breakdown-score">8.8</div>
+    </div>
+
+    <div class="breakdown-row">
+      <div class="breakdown-label">Опыт</div>
+      <div class="breakdown-bar">
+        <div class="breakdown-fill" style="width: 80%;"></div>
+      </div>
+      <div class="breakdown-score">8.0</div>
+    </div>
+
+    <div class="breakdown-row">
+      <div class="breakdown-label">Культура</div>
+      <div class="breakdown-bar">
+        <div class="breakdown-fill" style="width: 85%;"></div>
+      </div>
+      <div class="breakdown-score">8.5</div>
+    </div>
+
+    <div class="breakdown-row">
+      <div class="breakdown-label">Потенциал</div>
+      <div class="breakdown-bar">
+        <div class="breakdown-fill" style="width: 82%;"></div>
+      </div>
+      <div class="breakdown-score">8.2</div>
+    </div>
+
+    <div class="breakdown-note">
+      Вклад каждого критерия рассчитывается как: балл × вес. Общий score = сумма вкладов.
+    </div>
+  </article>
+</section>
+<section class="breakdown-grid">
+  <article class="comparison-card">
+    <div class="comparison-title">Сравнение кандидатов</div>
+
+    <div style="overflow-x: auto;">
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Кандидат</th>
+            <th>Общий балл</th>
+            <th>Навыки</th>
+            <th>Опыт</th>
+            <th>Культура</th>
+            <th>Потенциал</th>
+            <th>Комментарий</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="comparison-best">
+            <td>Кандидат A</td>
+            <td>8.4</td>
+            <td>8.8</td>
+            <td>8.0</td>
+            <td>8.5</td>
+            <td>8.2</td>
+            <td><span class="badge-small green">рекомендуется к офферу</span></td>
+          </tr>
+          <tr>
+            <td>Кандидат B</td>
+            <td>7.6</td>
+            <td>7.5</td>
+            <td>7.8</td>
+            <td>7.4</td>
+            <td>7.8</td>
+            <td>подходит, но ниже приоритета A</td>
+          </tr>
+          <tr class="comparison-worst">
+            <td>Кандидат C</td>
+            <td>6.2</td>
+            <td>6.5</td>
+            <td>6.0</td>
+            <td>6.4</td>
+            <td>5.8</td>
+            <td><span class="badge-small red">ниже порога</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </article>
+</section>
+
+  <!-- DECISION RULES & BIAS CONTROL -->
+  <section class="bottom-grid">
+    <article class="rules-card">
+      <div class="rules-title">Правила принятия решения</div>
+      <div class="rules-item"><strong>Score ≥ 8.0</strong> → кандидат рекомендуется к предложению о работе (при отсутствии критических рисков).</div>
+      <div class="rules-item"><strong>Score 7.0–7.9</strong> → кандидат в зоне “можно рассматривать”: решение принимается с учётом контекста и конкуренции.</div>
+      <div class="rules-item"><strong>Score 6.0–6.9</strong> → пограничный случай: возможен резерв или отказ, требуется дополнительное обсуждение.</div>
+      <div class="rules-item"><strong>Score &lt; 6.0</strong> → отказ: кандидат не соответствует требованиям роли на текущий момент.</div>
+      <div class="rules-item">При <strong>равном score</strong> приоритет отдаётся кандидату с более высоким потенциалом и культурным соответствием.</div>
+    </article>
+
+    <article class="bias-card">
+      <div class="bias-title">Контроль субъективности</div>
+      <div class="bias-item">Все интервьюеры используют единую шкалу и критерии, фиксируя баллы в системе, а не “ощущения”.</div>
+      <div class="bias-item">Перед финальным решением проводится калибровка: сравнение оценок разных интервьюеров по одному кандидату.</div>
+      <div class="bias-item">Запрещено принимать решение только на основе одного критерия (например, “харизма” или “компания из резюме”).</div>
+      <div class="bias-item">Раз в квартал проводится аудит: анализ распределения баллов по интервьюерам и ролям, поиск системных перекосов.</div>
+      <div class="bias-item">Модель оценки пересматривается на основе фактических данных: успешность и удержание нанятых кандидатов.</div>
+    </article>
+  </section>
+
+</div>
+</body>
+</html>
