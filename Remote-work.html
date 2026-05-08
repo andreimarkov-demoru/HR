@@ -11,10 +11,11 @@
 <style>
 :root{
   --bg:#f5f7fb;
-  --accent:rgb(109,162,150);
-  --accent-soft:#e6efec;
-  --text:#2b2b2b;
-  --muted:#6b7280;
+  --accent:rgba(230, 242, 242, 0.6);
+  --accent-soft:rgba(239, 239, 239, 0.7);
+  --text:#080b0e;
+  --muted:#080b0e;
+  --card:rgba(255,255,255,0.5);
 }
 
 /* BASE */
@@ -34,31 +35,28 @@ body{
 
 .hero-left{
   background:var(--accent);
-  color:#fff;
-  padding:42px;
+  color:#080b0e;
+  padding:40px;
   display:flex;
   flex-direction:column;
   justify-content:center;
 }
 
 .hero-right{
-  background:var(--bg);
-  padding:30px;
+  background:transparent;
+  padding:40px;
   display:flex;
   align-items:center;
-  justify-content:center;
 }
 
 .hero h1{margin:0;font-size:34px;}
 .hero p{margin-top:10px;opacity:.9;max-width:600px;}
 
 .meta span{
-  display:inline-block;
-  margin:6px 6px 0 0;
-  background:rgba(255,255,255,0.2);
-  padding:4px 10px;
-  border-radius:999px;
-  font-size:12px;
+  background: rgba(109, 162, 150, 0.65);
+    border: 1px solid rgba(109, 162, 150, 0.25);
+    padding: 5px 12px;
+    border-radius: 999px;
 }
 
 /* KPI */
@@ -72,7 +70,7 @@ body{
 
 .kpi{
   min-width:200px;
-  background:#fff;
+  background:rgba(239, 239, 239, 1);
   border-radius:14px;
   padding:14px;
   box-shadow:0 6px 18px rgba(0,0,0,0.05);
@@ -85,7 +83,7 @@ body{
 
 /* BOX */
 .box{
-  background:#fff;
+  background:rgba(255,255,255,0.5);
   border-radius:14px;
   padding:20px;
   box-shadow:0 6px 18px rgba(0,0,0,0.05);
@@ -112,6 +110,7 @@ body{
 .table td, .table th{
   font-size:14px;
 }
+  th, td {background: rgba(239, 239, 239, 0.7) !important;}
 </style>
 </head>
 
