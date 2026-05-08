@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HR01 — Отчет HR-службы</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Calibri, Arial, sans-serif;
+}
+
+body{
+    background:#f3f3f3;
+    color:#222;
+    overflow:hidden;
+}
+
+/* TOPBAR */
+
+.topbar{
+    height:48px;
+    background:#217346;
+    display:flex;
+    align-items:center;
+    padding:0 18px;
+    color:#fff;
+    gap:24px;
+    font-size:14px;
+}
+
+.logo{
+    font-size:20px;
+    font-weight:700;
+}
+
+.menu{
+    display:flex;
+    gap:18px;
+}
+
+/* RIBBON */
+
+.ribbon{
+    background:#fff;
+    border-bottom:1px solid #d9d9d9;
+    padding:12px 18px;
+    display:flex;
+    gap:28px;
+    flex-wrap:wrap;
+}
+
+.ribbon-group{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.ribbon-buttons{
+    display:flex;
+    gap:8px;
+}
+
+.btn{
+    background:#f8f8f8;
+    border:1px solid #d0d0d0;
+    padding:6px 10px;
+    border-radius:4px;
+    font-size:13px;
+}
+
+.ribbon-title{
+    font-size:11px;
+    color:#666;
+    text-transform:uppercase;
+}
+
+/* FORMULA */
+
+.formula-bar{
+    background:#fff;
+    border-bottom:1px solid #d9d9d9;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:8px 14px;
+}
+
+.name-box{
+    width:80px;
+    border:1px solid #cfcfcf;
+    padding:6px;
+    background:#fff;
+    font-size:13px;
+}
+
+.fx{
+    font-weight:700;
+    color:#666;
+}
+
+.formula-input{
+    flex:1;
+    border:1px solid #cfcfcf;
+    padding:6px 10px;
+    font-size:13px;
+}
+
+/* SHEET */
+
+.sheet-wrapper{
+    overflow:auto;
+    height:calc(100vh - 160px);
+    background:#fff;
+}
+
+.sheet{
+    border-collapse:collapse;
+    width:max-content;
+    min-width:100%;
+}
+
+.sheet th,
+.sheet td{
+    border:1px solid #d9d9d9;
+    padding:8px 12px;
+    height:34px;
+    font-size:14px;
+    white-space:nowrap;
+}
+
+.sheet thead th{
+    background:#f3f3f3;
+    color:#666;
+    text-align:center;
+    font-weight:600;
+}
+
+.row-num{
+    background:#f3f3f3;
+    color:#666;
+    text-align:center;
+    width:50px;
+}
+
+.header-row td{
+    background:#e2f0d9;
+    font-weight:700;
+}
+
+.good{
+    background:#dff0d8;
+    color:#2e7d32;
+    font-weight:700;
+    text-align:center;
+}
+
+.mid{
+    background:#fff3cd;
+    color:#9a6700;
+    font-weight:700;
+    text-align:center;
+}
+
+.bad{
+    background:#f8d7da;
+    color:#a94442;
+    font-weight:700;
+    text-align:center;
+}
+
+.done{
+    background:#dff0d8;
+    color:#2e7d32;
+    font-weight:700;
+    text-align:center;
+}
+
+.progress{
+    background:#fff3cd;
+    color:#9a6700;
+    font-weight:700;
+    text-align:center;
+}
+
+.statusbar{
+    height:30px;
+    background:#217346;
+    color:white;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 14px;
+    font-size:12px;
+}
+
+.tabs{
+    display:flex;
+    gap:8px;
+}
+
+.tab{
+    background:#ffffff22;
+    padding:4px 12px;
+    border-radius:4px;
+}
+
+@media(max-width:900px){
+
+    .sheet td,
+    .sheet th{
+        font-size:12px;
+        padding:6px 8px;
+    }
+
+}
+
+</style>
+</head>
+<body>
+
+<div class="topbar">
+    <div class="logo">Excel</div>
+
+    <div class="menu">
+        <span>Файл</span>
+        <span>Главная</span>
+        <span>Вставка</span>
+        <span>Разметка страницы</span>
+        <span>Формулы</span>
+        <span>Данные</span>
+        <span>Рецензирование</span>
+        <span>Вид</span>
+    </div>
+</div>
+
+<div class="ribbon">
+
+    <div class="ribbon-group">
+        <div class="ribbon-buttons">
+            <div class="btn">Вставить</div>
+            <div class="btn">Копировать</div>
+            <div class="btn">Формат</div>
+        </div>
+        <div class="ribbon-title">Буфер обмена</div>
+    </div>
+
+    <div class="ribbon-group">
+        <div class="ribbon-buttons">
+            <div class="btn">Calibri</div>
+            <div class="btn">14</div>
+            <div class="btn">Ж</div>
+            <div class="btn">К</div>
+            <div class="btn">Ч</div>
+        </div>
+        <div class="ribbon-title">Шрифт</div>
+    </div>
+
+    <div class="ribbon-group">
+        <div class="ribbon-buttons">
+            <div class="btn">Фильтр</div>
+            <div class="btn">Сортировка</div>
+            <div class="btn">Условное форматирование</div>
+        </div>
+        <div class="ribbon-title">Данные</div>
+    </div>
+
+</div>
+
+<div class="formula-bar">
+    <div class="name-box">A1</div>
+    <div class="fx">fx</div>
+    <div class="formula-input">HR01 — Отчет HR-службы по аудиту кадровой документации</div>
+</div>
+
+<div class="sheet-wrapper">
+
+<table class="sheet">
+
+<thead>
+<tr>
+    <th class="row-num"></th>
+    <th>A</th>
+    <th>B</th>
+    <th>C</th>
+    <th>D</th>
+    <th>E</th>
+    <th>F</th>
+    <th>G</th>
+    <th>H</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr class="header-row">
+<td class="row-num">1</td>
+<td>ID</td>
+<td>Подразделение</td>
+<td>Проверено дел</td>
+<td>Нарушения</td>
+<td>Критичность</td>
+<td>Ответственный</td>
+<td>Статус</td>
+<td>Комментарий</td>
+</tr>
+
+<tr><td class="row-num">2</td><td>1</td><td>HR</td><td>48</td><td>2</td><td class="good">LOW</td><td>Смирнова И.А.</td><td class="done">DONE</td><td>Документы приведены в соответствие</td></tr>
+
+<tr><td class="row-num">3</td><td>2</td><td>IT</td><td>36</td><td>5</td><td class="mid">MID</td><td>Кузнецов А.В.</td><td class="progress">IN PROGRESS</td><td>Проводится корректировка данных</td></tr>
+
+<tr><td class="row-num">4</td><td>3</td><td>Финансы</td><td>27</td><td>1</td><td class="good">LOW</td><td>Орлова Е.С.</td><td class="done">DONE</td><td>Замечания устранены</td></tr>
+
+<tr><td class="row-num">5</td><td>4</td><td>Юридический отдел</td><td>18</td><td>4</td><td class="mid">MID</td><td>Павлов Н.Д.</td><td class="progress">IN PROGRESS</td><td>Обновляются шаблоны договоров</td></tr>
+
+<tr><td class="row-num">6</td><td>5</td><td>Продажи</td><td>52</td><td>8</td><td class="bad">HIGH</td><td>Тихонов А.П.</td><td class="progress">IN PROGRESS</td><td>Высокий процент несоответствий</td></tr>
+
+<tr><td class="row-num">7</td><td>6</td><td>Маркетинг</td><td>21</td><td>2</td><td class="good">LOW</td><td>Соколова М.В.</td><td class="done">DONE</td><td>Нарушения устранены</td></tr>
+
+<tr><td class="row-num">8</td><td>7</td><td>Логистика</td><td>31</td><td>6</td><td class="mid">MID</td><td>Иванов К.С.</td><td class="progress">IN PROGRESS</td><td>Часть документов обновляется</td></tr>
+
+<tr><td class="row-num">9</td><td>8</td><td>Закупки</td><td>19</td><td>1</td><td class="good">LOW</td><td>Морозова А.А.</td><td class="done">DONE</td><td>Отклонения закрыты</td></tr>
+
+<tr><td class="row-num">10</td><td>9</td><td>Поддержка</td><td>42</td><td>7</td><td class="bad">HIGH</td><td>Николаев Е.В.</td><td class="progress">IN PROGRESS</td><td>Требуется повторная проверка</td></tr>
+
+<tr><td class="row-num">11</td><td>10</td><td>Безопасность</td><td>14</td><td>3</td><td class="mid">MID</td><td>Романов П.А.</td><td class="progress">IN PROGRESS</td><td>Корректируются согласия</td></tr>
+
+<tr><td class="row-num">12</td><td>11</td><td>Администрация</td><td>25</td><td>0</td><td class="good">LOW</td><td>Семенова И.В.</td><td class="done">DONE</td><td>Нарушений не выявлено</td></tr>
+
+<tr><td class="row-num">13</td><td>12</td><td>Производство</td><td>63</td><td>11</td><td class="bad">HIGH</td><td>Григорьев А.Н.</td><td class="progress">IN PROGRESS</td><td>Необходим план корректировок</td></tr>
+
+<tr><td class="row-num">14</td><td>13</td><td>QA</td><td>17</td><td>2</td><td class="good">LOW</td><td>Тарасова Е.В.</td><td class="done">DONE</td><td>Документация обновлена</td></tr>
+
+<tr><td class="row-num">15</td><td>14</td><td>DevOps</td><td>22</td><td>4</td><td class="mid">MID</td><td>Лебедев О.С.</td><td class="progress">IN PROGRESS</td><td>Проверка продолжается</td></tr>
+
+<tr><td class="row-num">16</td><td>15</td><td>HRBP</td><td>28</td><td>1</td><td class="good">LOW</td><td>Комарова Н.А.</td><td class="done">DONE</td><td>Замечания устранены</td></tr>
+
+<tr><td class="row-num">17</td><td>16</td><td>Аналитика</td><td>16</td><td>3</td><td class="mid">MID</td><td>Фролов И.Д.</td><td class="progress">IN PROGRESS</td><td>Обновляются инструкции</td></tr>
+
+<tr><td class="row-num">18</td><td>17</td><td>Бухгалтерия</td><td>34</td><td>5</td><td class="mid">MID</td><td>Жукова Т.В.</td><td class="progress">IN PROGRESS</td><td>Проводится сверка данных</td></tr>
+
+<tr><td class="row-num">19</td><td>18</td><td>Архив</td><td>40</td><td>9</td><td class="bad">HIGH</td><td>Карпов Е.Н.</td><td class="progress">IN PROGRESS</td><td>Часть документов повреждена</td></tr>
+
+<tr><td class="row-num">20</td><td>19</td><td>Call Center</td><td>29</td><td>2</td><td class="good">LOW</td><td>Белов Д.С.</td><td class="done">DONE</td><td>Нарушения устранены</td></tr>
+
+<tr><td class="row-num">21</td><td>20</td><td>Проектный офис</td><td>13</td><td>1</td><td class="good">LOW</td><td>Егорова А.М.</td><td class="done">DONE</td><td>Актуализация завершена</td></tr>
+
+<tr><td class="row-num">22</td><td>21</td><td>Операционный отдел</td><td>45</td><td>6</td><td class="mid">MID</td><td>Макаров Н.В.</td><td class="progress">IN PROGRESS</td><td>Требуется повторный аудит</td></tr>
+
+<tr><td class="row-num">23</td><td>22</td><td>Склад</td><td>38</td><td>7</td><td class="bad">HIGH</td><td>Волкова И.П.</td><td class="progress">IN PROGRESS</td><td>Нарушены сроки обновления</td></tr>
+
+<tr><td class="row-num">24</td><td>23</td><td>Обучение</td><td>11</td><td>0</td><td class="good">LOW</td><td>Киселева О.В.</td><td class="done">DONE</td><td>Полное соответствие</td></tr>
+
+<tr><td class="row-num">25</td><td>24</td><td>Контроль качества</td><td>26</td><td>4</td><td class="mid">MID</td><td>Савельев П.Н.</td><td class="progress">IN PROGRESS</td><td>Обновляются регламенты</td></tr>
+
+<tr><td class="row-num">26</td><td>25</td><td>Управление проектами</td><td>20</td><td>2</td><td class="good">LOW</td><td>Дмитриева Н.С.</td><td class="done">DONE</td><td>Все отклонения закрыты</td></tr>
+
+<tr><td class="row-num">27</td><td>26</td><td>Рекрутинг</td><td>33</td><td>5</td><td class="mid">MID</td><td>Алексеева И.Г.</td><td class="progress">IN PROGRESS</td><td>Часть анкет неактуальна</td></tr>
+
+<tr><td class="row-num">28</td><td>27</td><td>Документооборот</td><td>24</td><td>8</td><td class="bad">HIGH</td><td>Козлов Р.В.</td><td class="progress">IN PROGRESS</td><td>Требуется восстановление архива</td></tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<div class="statusbar">
+
+<div class="tabs">
+    <div class="tab">Отчет HR-службы</div>
+    <div class="tab">Аудит</div>
+    <div class="tab">Корректировки</div>
+</div>
+
+<div>
+    Готово
+</div>
+
+</div>
+
+</body>
+</html>
