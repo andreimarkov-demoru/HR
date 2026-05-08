@@ -11,10 +11,10 @@
 <style>
 :root{
   --bg:#f5f7fb;
-  --accent:rgb(109,162,150);
-  --accent-soft:#e6efec;
-  --text:#2b2b2b;
-  --muted:#6b7280;
+  --accent:#080b0e;
+  --accent-soft:rgba(239, 239, 239, 0.7);
+  --text:#080b0e;
+  --muted:#080b0e;
 }
 
 body{
@@ -28,22 +28,18 @@ body{
 .header{
   padding: 50px 30px;
   margin: 0 auto;
-  background:#ffffff;
+  background: rgba(255,255,255,0.5);
   box-shadow:0 6px 18px rgba(0,0,0,0.05);
   width: 100%;
 }
 
-.header h1{font-size:30px;margin:0;}
 .header p{margin-top:10px;color:var(--muted);max-width:900px;}
 
 .meta span{
-  display:inline-block;
-  margin:6px 6px 0 0;
-  background:rgba(109,162,150,0.12);
-  border:1px solid rgba(109,162,150,0.25);
-  padding:4px 10px;
-  border-radius:999px;
-  font-size:13px;
+  background: rgba(109, 162, 150, 0.65);
+    border: 1px solid rgba(109, 162, 150, 0.25);
+    padding: 5px 12px;
+    border-radius: 999px;
 }
 
 .section{margin-top:40px;}
@@ -55,12 +51,12 @@ body{
   box-shadow:0 6px 18px rgba(0,0,0,0.05);
 }
   .minicard {
-    background-color: #e6efec;
+    background-color: rgba(239, 239, 239, 0.7);
   }
 
 /* PATH */
 .path{
-  background:#fff;
+  background: rgba(255,255,255,0.5);
   border-radius:14px;
   padding:16px;
   height:100%;
@@ -150,7 +146,6 @@ th{
 <body>
 
 <div class="header fade">
-  <h1>Обучение и развитие персонала</h1>
   <p>
     Обучение — ключевой механизм закрытия компетенционных разрывов,
     выявленных в процессе оценки 180/360. Формирует основу для развития сотрудников,
